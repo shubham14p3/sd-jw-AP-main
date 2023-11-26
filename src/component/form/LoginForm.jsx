@@ -58,7 +58,6 @@ function LoginForm() {
           email: values.email,
           password: values.password,
         });
-        console.log(data)
         if (
           data?.data?.status==="success"
         ) {

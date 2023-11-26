@@ -83,13 +83,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/",
-        element: <PrivateRoute path="/home" element={<Home />} />,
-      },
-      {
-        index: true,
         path: "/home",
-        element: <Home/>,
+        element: <Home />,
       },
       {
         path: "/home-analytics",
