@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 const initialState = {
   accessToken: undefined,
   user: undefined,
+  usersList:[]
 };
 
 const authSlice = createSlice({
