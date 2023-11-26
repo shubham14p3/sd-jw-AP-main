@@ -1,107 +1,111 @@
-import React from "react";
-import googleLogo from "../../assets/img/google-logo.png";
-import appleLogo from "../../assets/img/apple-logo.png";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+import { useLoginUserMutation } from "../../redux/features/auth/authApi";
+const styles = {
+  error: {
+    color: "red",
+    marginBottom: "8px",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "10px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    fontSize: "16px",
+  },
+  input: {
+    padding: "10px",
+    marginBottom: "16px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+    fontSize: "14px",
+  },
+  header: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+  },
+};
+
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string().required("Required"),
+});
 
 function LoginForm() {
+  const [showPass, setShowPass] = useState(false);
+  const [loginUser, {}] = useLoginUserMutation();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      console.log(values);
+      loginUser({
+        email: values.email,
+        password: values.password,
+      }).then((data) => {
+        if (data?.status === "success") {
+          console.log("Login successfully", data);
+          // notifySuccess("Login successfully");
+          // router.push(redirect || "/");
+        } else {
+          // notifyError(data?.error?.data?.error);
+          console.log("Login successfully", data);
+        }
+      });
+      formik.reset();
+    },
+  });
+
   return (
-    <>
-      <div className="crancy-wc__heading">
-        <h3 className="crancy-wc__form-title crancy-wc__form-title__one">
-          Login to your account
-        </h3>
-      </div>
-      <form className="crancy-wc__form-main">
-        {/* <!-- Form Group --> */}
-        <div className="form-group">
-          <div className="form-group__input">
-            <input
-              className="crancy-wc__form-input"
-              type="email"
-              name="email"
-              placeholder="admin@mail.com"
-              required="required"
-            />
-          </div>
+    <div>
+      <h2 style={styles.header}>Agent Login Form</h2>
+      <br />
+      <form onSubmit={formik.handleSubmit}>
+        <div>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            style={styles.input}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+          />
+          {formik.touched.email && formik.errors.email ? (
+            <div style={styles.error}>{formik.errors.email}</div>
+          ) : null}
         </div>
-        {/* <!-- Form Group --> */}
-        <div className="form-group">
-          <div className="form-group__input">
-            <input
-              className="crancy-wc__form-input"
-              placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-              id="password-field"
-              type="password"
-              name="password"
-              maxLength="8"
-              required="required"
-            />
-            <span className="crancy-wc__toggle">
-              <i className="fas fa-eye" id="toggle-icon"></i>
-            </span>
-          </div>
+        <div>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            style={styles.input}
+            name="password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+          {formik.touched.password && formik.errors.password ? (
+            <div style={styles.error}>{formik.errors.password}</div>
+          ) : null}
         </div>
-        {/* <!-- Form Group --> */}
-        <div className="form-group">
-          <div className="crancy-wc__check-inline">
-            <div className="crancy-wc__checkbox">
-              <input
-                className="crancy-wc__form-check"
-                id="checkbox"
-                name="checkbox"
-                type="checkbox"
-              />
-              <label htmlFor="checkbox">Remember Me</label>
-            </div>
-            <div className="crancy-wc__forgot">
-              <a href="forget-password.html" className="forgot-pass">
-                Forgot Password?
-              </a>
-            </div>
-          </div>
-        </div>
-        {/* <!-- Form Group --> */}
-        <div className="form-group form-mg-top25">
-          <div className="crancy-wc__button">
-            <button className="ntfmax-wc__btn" type="submit">
-              Sign in with email
-            </button>
-          </div>
-          <div className="crancy-wc__form-login--label">
-            <span>Or login with</span>
-          </div>
-          <div className="crancy-wc__button--group">
-            <button
-              className="ntfmax-wc__btn ntfmax-wc__btn--two"
-              type="submit"
-            >
-              <div className="ntfmax-wc__btn-icon">
-                <img src={googleLogo} alt="" />
-              </div>
-              Google
-            </button>
-            <button
-              className="ntfmax-wc__btn ntfmax-wc__btn--two"
-              type="submit"
-            >
-              <div className="ntfmax-wc__btn-icon">
-                <img src={appleLogo} alt="" />
-              </div>
-              Apple
-            </button>
-          </div>
-        </div>
-        {/* <!-- Form Group --> */}
-        <div className="form-group form-mg-top30">
-          <div className="crancy-wc__bottom">
-            <p className="crancy-wc__text">
-              Dont’t have an account ?{" "}
-              <Link to="/create-account">Get Started</Link>
-            </p>
-          </div>
+        <div>
+          <button style={styles.button} type="submit">
+            Login
+          </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

@@ -47,7 +47,7 @@ const router = createBrowserRouter([
     Component: LoginLayout,
     children: [
       {
-        path: "/login",
+        path: "/",
         element: <Login />,
       },
       {
@@ -78,6 +78,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        path: "/home",
         element: <Home />,
       },
       {

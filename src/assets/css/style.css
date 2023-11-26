@@ -7306,7 +7306,7 @@ input[type="checkbox"]:checked::before {
 @media only screen and (min-width: 0px) and (max-width: 1550px) {
   .crancy-wc__form,
   .crancy-wc__full {
-    height: initial;
+    height: 100vh;
     min-height: initial;
   }
 }

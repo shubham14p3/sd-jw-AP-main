@@ -20,7 +20,8 @@ function LoginLayout({ children }) {
                   <div className="crancy-wc__banner">
                     <div className="crancy-wc__logo">
                       <Link to="/">
-                        <img src={logoW} alt="#" />
+                        {/* <img src={logoW} alt="JW" /> */}
+                        JW
                       </Link>
                     </div>
                     <img src={welcomeImg} alt="#" />
