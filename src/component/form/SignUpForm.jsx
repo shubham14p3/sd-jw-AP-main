@@ -1,8 +1,66 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import googleLogo from "../../assets/img/google-logo.png";
 import appleLogo from "../../assets/img/apple-logo.png";
+import ErrorMsg from "../../component/common/error-msg";
+import { notifyError, notifySuccess } from "../../utils/toast";
+import { useRegisterUserMutation } from "../../redux/features/auth/authApi";
+import { useNavigate } from "react-router-dom";
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("First name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
+});
+
 function SignUpForm() {
+  const [showPass, setShowPass] = React.useState(false);
+  const [registerUser, {}] = useRegisterUserMutation();
+  const navigate = useNavigate();
+
+  const handleGoogleSignUp = async () => {
+    // Handle Google sign-up logic
+  };
+
+  const handleAppleSignUp = async () => {
+    // Handle Apple sign-up logic
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      checkbox: false,
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const data = await registerUser({
+          name: formik.values.name,
+          email: formik.values.email,
+          password: formik.values.password,
+          role: "Super Admin",
+        });
+        console.log(data);
+        if (data?.error) {
+          notifyError("Register Failed");
+        } else {
+          notifySuccess(data?.data?.message);
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
   return (
     <>
       <div className="crancy-wc__heading">
@@ -10,67 +68,70 @@ function SignUpForm() {
           Create your account
         </h3>
       </div>
-      {/* <!-- Sign in Form --> */}
-      <form className="crancy-wc__form-main">
+
+      <form onSubmit={formik.handleSubmit}>
         <div className="row">
-          <div className="col-lg-6 col-md-6 col-12">
-            {/* <!-- Form Group --> */}
-            <div className="form-group">
-              <div className="form-group__input">
-                <input
-                  className="crancy-wc__form-input"
-                  type="text"
-                  name="first-name"
-                  placeholder="First name"
-                  required="required"
-                />
-              </div>
+          <div className="form-group">
+            <div className="form-group__input">
+              <input
+                className="crancy-wc__form-input"
+                type="name"
+                name="name"
+                id="name"
+                placeholder="Name"
+                required="required"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
+              />
             </div>
-          </div>
-          <div className="col-lg-6 col-md-6 col-12">
-            <div className="form-group">
-              <div className="form-group__input">
-                <input
-                  className="crancy-wc__form-input"
-                  type="text"
-                  name="last-name"
-                  placeholder="Last name"
-                  required="required"
-                />
-              </div>
-            </div>
+            {formik.touched.name && formik.errors.name ? (
+              <ErrorMsg msg={formik.errors.name} />
+            ) : null}
           </div>
         </div>
-        {/* <!-- Form Group --> */}
         <div className="form-group">
           <div className="form-group__input">
             <input
               className="crancy-wc__form-input"
               type="email"
+              id="email"
               name="email"
               placeholder="Email"
               required="required"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
             />
           </div>
+          {formik.touched.email && formik.errors.email ? (
+            <ErrorMsg msg={formik.errors.email} />
+          ) : null}
         </div>
-        {/* <!-- Form Group --> */}
         <div className="form-group">
           <div className="form-group__input">
             <input
               className="crancy-wc__form-input"
               placeholder="Password"
-              id="password-field"
-              type="password"
+              id="password"
+              type={showPass ? "text" : "password"}
               name="password"
-              maxLength="8"
               required="required"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
             />
-            <span className="crancy-wc__toggle">
+            <span
+              className="crancy-wc__toggle"
+              onClick={() => setShowPass(!showPass)}
+            >
               <i className="fas fa-eye" id="toggle-icon"></i>
             </span>
           </div>
+          {formik.touched.password && formik.errors.password ? (
+            <ErrorMsg msg={formik.errors.password} />
+          ) : null}
         </div>
-        {/* <!-- Form Group --> */}
         <div className="form-group">
           <div className="crancy-wc__check-inline">
             <div className="crancy-wc__checkbox">
@@ -79,19 +140,25 @@ function SignUpForm() {
                 id="checkbox"
                 name="checkbox"
                 type="checkbox"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                checked={formik.values.checkbox}
               />
               <label htmlFor="checkbox">
                 By proceeding, you agree to the{" "}
                 <a href="#">Terms and Conditions</a>
               </label>
             </div>
+            {formik.touched.checkbox && formik.errors.checkbox ? (
+              <ErrorMsg msg={formik.errors.checkbox} />
+            ) : null}
           </div>
         </div>
-        {/* <!-- Form Group --> */}
+        <br />
         <div className="form-group form-mg-top25">
           <div className="crancy-wc__button">
             <button className="ntfmax-wc__btn" type="submit">
-              Sign in with email
+              Sign up with email
             </button>
           </div>
           <div className="crancy-wc__form-login--label">
@@ -100,25 +167,26 @@ function SignUpForm() {
           <div className="crancy-wc__button--group">
             <button
               className="ntfmax-wc__btn ntfmax-wc__btn--two"
-              type="submit"
+              type="button"
+              onClick={handleGoogleSignUp}
             >
               <div className="ntfmax-wc__btn-icon">
-                <img src={googleLogo} />
+                <img src={googleLogo} alt="Google" />
               </div>
               Google
             </button>
             <button
               className="ntfmax-wc__btn ntfmax-wc__btn--two"
-              type="submit"
+              type="button"
+              onClick={handleAppleSignUp}
             >
               <div className="ntfmax-wc__btn-icon">
-                <img src={appleLogo} />
+                <img src={appleLogo} alt="Apple" />
               </div>
               Apple
             </button>
           </div>
         </div>
-        {/* <!-- Form Group --> */}
         <div className="form-group form-mg-top30">
           <div className="crancy-wc__bottom">
             <p className="crancy-wc__text">

@@ -7,7 +7,7 @@ export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     registerUser: builder.mutation({
       query: (data) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/signup`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/register`,
         method: "POST",
         body: data,
       }),
@@ -15,7 +15,7 @@ export const authApi = apiSlice.injectEndpoints({
     // signUpProvider
     signUpProvider: builder.mutation({
       query: (token) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/register/${token}`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/register/${token}`,
         method: "POST",
       }),
 
@@ -46,7 +46,7 @@ export const authApi = apiSlice.injectEndpoints({
     // login
     loginUser: builder.mutation({
       query: (data) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/login`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/login`,
         method: "POST",
         body: data,
       }),
@@ -54,30 +54,29 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-
           Cookies.set(
             "userInfo",
             JSON.stringify({
               accessToken: result.data.data.token,
-              user: result.data.data.user,
+              user: result.data.data.admin,
             }),
             { expires: 0.5 }
           );
-
+            
           dispatch(
             userLoggedIn({
               accessToken: result.data.data.token,
-              user: result.data.data.user,
+              user: result.data.data.admin,
             })
           );
         } catch (err) {
-          // do nothing
+          return err;
         }
       },
     }),
     // get me
     getUser: builder.query({
-      query: () => `${NEXT_PUBLIC_DB_HOST}/api/user/me`,
+      query: () => `${NEXT_PUBLIC_DB_HOST}/api/admin/me`,
 
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -94,7 +93,8 @@ export const authApi = apiSlice.injectEndpoints({
     }),
     // confirmEmail
     confirmEmail: builder.query({
-      query: (token) => `${NEXT_PUBLIC_DB_HOST}/api/user/confirmEmail/${token}`,
+      query: (token) =>
+        `${NEXT_PUBLIC_DB_HOST}/api/admin/confirmEmail/${token}`,
 
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
@@ -123,7 +123,7 @@ export const authApi = apiSlice.injectEndpoints({
     // reset password
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/forget-password`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/forget-password`,
         method: "PATCH",
         body: data,
       }),
@@ -131,7 +131,7 @@ export const authApi = apiSlice.injectEndpoints({
     // confirmForgotPassword
     confirmForgotPassword: builder.mutation({
       query: (data) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/confirm-forget-password`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/confirm-forget-password`,
         method: "PATCH",
         body: data,
       }),
@@ -139,7 +139,7 @@ export const authApi = apiSlice.injectEndpoints({
     // change password
     changePassword: builder.mutation({
       query: (data) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/change-password`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/change-password`,
         method: "PATCH",
         body: data,
       }),
@@ -147,7 +147,7 @@ export const authApi = apiSlice.injectEndpoints({
     // updateProfile password
     updateProfile: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `${NEXT_PUBLIC_DB_HOST}/api/user/update-user/${id}`,
+        url: `${NEXT_PUBLIC_DB_HOST}/api/admin/update-user/${id}`,
         method: "PUT",
         body: data,
       }),

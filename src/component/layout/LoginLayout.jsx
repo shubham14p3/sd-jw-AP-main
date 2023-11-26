@@ -63,7 +63,7 @@ function LoginLayout({ children }) {
                       </div>
                     </div>
                     <p className="crancy-wc__footer--copyright">
-                      @ 2023 <a href="#">Dashra.</a> All Right Reserved.{" "}
+                      @ {new Date().getFullYear()} <a href="#">Diva.</a> All Right Reserved.{" "}
                     </p>
                   </div>
                   {/* <!-- End Footer Top --> */}

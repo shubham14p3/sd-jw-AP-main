@@ -4,7 +4,11 @@ import * as Yup from "yup";
 import ErrorMsg from "../../component/common/error-msg";
 import { notifyError, notifySuccess } from "../../utils/toast";
 import { useLoginUserMutation } from "../../redux/features/auth/authApi";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import socialImg2 from "../../assets/img/social-2.png";
+// import socialImg3 from "../../assets/img/social-3.png";
+import { Link } from "react-router-dom";
 
 const styles = {
   error: {
@@ -54,7 +58,11 @@ function LoginForm() {
           email: values.email,
           password: values.password,
         });
-        if (data?.data?.status === "success") {
+        if (
+          data?.data?.name !== " " &&
+          data?.data?.name !== undefined &&
+          data?.data?.name !== null
+        ) {
           notifySuccess("Login successfully");
           setTimeout(() => {
             navigate("/home");
@@ -99,15 +107,31 @@ function LoginForm() {
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
+          {/* <span className="open-eye" onClick={() => setShowPass(!showPass)}>
+            {showPass ? (
+              <FontAwesomeIcon icon="fa-solid fa-eye" />
+            ) : (
+              <FontAwesomeIcon icon="fa-regular fa-eye" />
+            )}
+          </span> */}
           {formik.touched.password && formik.errors.password ? (
             <ErrorMsg msg={formik.errors.password} />
           ) : null}
         </div>
+
         <br />
         <div>
           <button style={styles.button} type="submit">
             Login
           </button>
+        </div>
+        {/* <!-- Form Group --> */}
+        <div className="form-group form-mg-top30">
+          <div className="crancy-wc__bottom">
+            <p className="crancy-wc__text">
+              Dont have account ? <Link to="/create-account">Sign Up</Link>
+            </p>
+          </div>
         </div>
       </form>
     </div>
