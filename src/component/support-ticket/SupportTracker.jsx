@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SelectInput from "../form/SelectInput";
 import DoughnutChart from "../chart/Doughnut";
-const borderColor = document.body.classList.contains("active")
+const borderColor = document.body?.classList.contains("active")
   ? "#222539"
   : "#fff";
 
