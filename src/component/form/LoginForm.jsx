@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import ErrorMsg from "../../component/common/error-msg";
+import { notifyError, notifySuccess } from "../../utils/toast";
 import { useLoginUserMutation } from "../../redux/features/auth/authApi";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 const styles = {
   error: {
     color: "red",
@@ -38,7 +41,7 @@ const validationSchema = Yup.object().shape({
 function LoginForm() {
   const [showPass, setShowPass] = useState(false);
   const [loginUser, {}] = useLoginUserMutation();
-
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -46,21 +49,22 @@ function LoginForm() {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      loginUser({
-        email: values.email,
-        password: values.password,
-      }).then((data) => {
-        if (data?.status === "success") {
-          console.log("Login successfully", data);
-          // notifySuccess("Login successfully");
-          // router.push(redirect || "/");
+      try {
+        const data = await loginUser({
+          email: values.email,
+          password: values.password,
+        });
+        if (data?.data?.status === "success") {
+          notifySuccess("Login successfully");
+          setTimeout(() => {
+            navigate("/home");
+          }, 2000);
         } else {
-          // notifyError(data?.error?.data?.error);
-          console.log("Login successfully", data);
+          notifyError("Unable to Login. Try Again");
         }
-      });
-      formik.reset();
+      } catch (error) {
+        notifyError("An error occurred during login. Please try again.");
+      }
     },
   });
 
@@ -81,7 +85,7 @@ function LoginForm() {
             value={formik.values.email}
           />
           {formik.touched.email && formik.errors.email ? (
-            <div style={styles.error}>{formik.errors.email}</div>
+            <ErrorMsg msg={formik.errors.email} />
           ) : null}
         </div>
         <div>
@@ -96,9 +100,10 @@ function LoginForm() {
             value={formik.values.password}
           />
           {formik.touched.password && formik.errors.password ? (
-            <div style={styles.error}>{formik.errors.password}</div>
+            <ErrorMsg msg={formik.errors.password} />
           ) : null}
         </div>
+        <br />
         <div>
           <button style={styles.button} type="submit">
             Login

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Menu from "../menu";
 import Header from "../header";
+import { ToastComponent } from "../../utils/toast";
 
 function Layout({ children }) {
   const [menu, setMenu] = useState(false);
@@ -21,13 +22,17 @@ function Layout({ children }) {
   }, [menu]);
 
   return (
-    <div id="crancy-dark-light">
-      <div className="crancy-body-area ">
-        <Menu toggleMenu={toggleMenu} menu={menu} />
-        <Header toggleMenu={toggleMenu} menu={menu} />
-        <Outlet />
+    <>
+      <ToastComponent />
+      <div id="crancy-dark-light">
+        <div className="crancy-body-area ">
+          <Menu toggleMenu={toggleMenu} menu={menu} />
+          <Header toggleMenu={toggleMenu} menu={menu} />
+
+          <Outlet />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
