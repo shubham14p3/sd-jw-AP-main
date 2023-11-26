@@ -40,6 +40,7 @@ import ChangePassword from "./pages/settings/change-password";
 import SettingsFaq from "./pages/settings/faq";
 import TermsAndCondition from "./pages/settings/terms-and-conditions";
 import SupportTicket from "./pages/support-ticket";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -82,11 +83,16 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        path: "/home",
-        element: <Home />,
+        path: "/",
+        element: <PrivateRoute path="/home" element={<Home />} />,
       },
       {
-        path: "//home-analytics",
+        index: true,
+        path: "/home",
+        element: <Home/>,
+      },
+      {
+        path: "/home-analytics",
         element: <HomeAnalytics />,
       },
       {

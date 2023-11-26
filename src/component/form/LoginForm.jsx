@@ -58,10 +58,9 @@ function LoginForm() {
           email: values.email,
           password: values.password,
         });
+        console.log(data)
         if (
-          data?.data?.name !== " " &&
-          data?.data?.name !== undefined &&
-          data?.data?.name !== null
+          data?.data?.status==="success"
         ) {
           notifySuccess("Login successfully");
           setTimeout(() => {

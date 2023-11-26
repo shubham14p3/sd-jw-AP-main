@@ -13,11 +13,11 @@ function Layout({ children }) {
     if (menu) {
       document
         .getElementsByClassName("crancy-adashboard")[0]
-        .classList.add("crancy-close");
+        ?.classList.add("crancy-close");
     } else {
       document
         .getElementsByClassName("crancy-adashboard")[0]
-        .classList.remove("crancy-close");
+        ?.classList.remove("crancy-close");
     }
   }, [menu]);
 
