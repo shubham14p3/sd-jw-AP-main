@@ -6,9 +6,18 @@ import SearchBar from "../../component/user/SearchBar";
 import UsersCom from "../../component/user/UsersCom";
 import Sidebar3 from "../../component/user/Sidebar3";
 import useMenu from "../../hooks/useMenu";
-
-function Users() {
+// import { useGetAllUsersQuery } from "../../redux/features/auth/authApi";
+const Users = () => {
   useMenu();
+  // const [getAllUsers, {}] = useGetAllUsersQuery();
+  // const abc = async () => {
+  //   const data = await getAllUsers();
+  //   console.log(data);
+  // };
+  // useEffect(() => {
+  //   abc();
+  // }, []);
+
   return (
     <Layout>
       <BreadCrumb title="Users" link="/user" />
@@ -21,6 +30,6 @@ function Users() {
       </Wrapper>
     </Layout>
   );
-}
+};
 
 export default Users;

@@ -6,7 +6,9 @@ import socialImg3 from "../../assets/img/social-3.png";
 import socialImg4 from "../../assets/img/social-4.png";
 import socialImg5 from "../../assets/img/social-5.png";
 
-function SidebarProfile() {
+const SidebarProfile = (props) => {
+  const {name, email ,role, status} = props.user;
+
   return (
     <div className="col-lg-4  col-12 crancy-upinner__column1">
       {/* <!-- Profile Card --> */}
@@ -15,7 +17,7 @@ function SidebarProfile() {
           <img src={profileImg} alt="#" />
         </div>
         <div className="crancy-upcard__heading">
-          <h3 className="crancy-upcard__title">Rayhan Khan Shovo</h3>
+          <h3 className="crancy-upcard__title">{name?name:null}</h3>
           <div className="crancy-upcard__location">
             <svg
               width="14"
@@ -36,13 +38,19 @@ function SidebarProfile() {
             <b>Mobile :</b> <span>+232 4334 2343</span>
           </li>
           <li>
-            <b>Email :</b> <span>Demoem232@gmail.com</span>
+            <b>Email :</b> <span>{email?email:null}</span>
           </li>
           <li>
             <b>Fax :</b> <span>+34345354</span>
           </li>
           <li>
             <b>Gender :</b> <span>Male</span>
+          </li>
+          <li>
+            <b>Role :</b> <span>{role?role:null}</span>
+          </li>
+          <li>
+            <b>Account Status :</b> <span>{status?status:null}</span>
           </li>
           <li>
             <b>Joining Date :</b>{" "}

@@ -4,7 +4,6 @@ import useAuthCheck from "../../hooks/use-auth-check";
 import Loader from "../../component/loader/loader";
 function Layout({ children }) {
   const authChecked = useAuthCheck();
-  console.log('children home',children)
   return !authChecked ? (
     <div
       className="d-flex align-items-center justify-content-center"

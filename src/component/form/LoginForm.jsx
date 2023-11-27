@@ -3,13 +3,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ErrorMsg from "../../component/common/error-msg";
 import { notifyError, notifySuccess } from "../../utils/toast";
-import { useLoginUserMutation } from "../../redux/features/auth/authApi";
 import { useNavigate } from "react-router-dom";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import socialImg2 from "../../assets/img/social-2.png";
-// import socialImg3 from "../../assets/img/social-3.png";
 import { Link } from "react-router-dom";
-
+import { adminLogin } from "../../redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 const styles = {
   error: {
     color: "red",
@@ -44,8 +41,8 @@ const validationSchema = Yup.object().shape({
 
 function LoginForm() {
   const [showPass, setShowPass] = useState(false);
-  const [loginUser, {}] = useLoginUserMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -54,13 +51,13 @@ function LoginForm() {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const data = await loginUser({
-          email: values.email,
-          password: values.password,
-        });
-        if (
-          data?.data?.status==="success"
-        ) {
+        const data = await dispatch(
+          adminLogin({
+            email: values.email,
+            password: values.password,
+          })
+        );
+        if (data?.payload === 200) {
           notifySuccess("Login successfully");
           setTimeout(() => {
             navigate("/home");
