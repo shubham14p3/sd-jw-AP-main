@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   confirmAdminEmail,
@@ -13,12 +13,12 @@ const EmailVerification = () => {
   const navigate = useNavigate();
   const isLoading = useSelector((state) => state.auth.isLoading);
   const isSuccess = useSelector((state) => state.auth.isSuccess);
+  const [isConfirmed, setIsConfirmed] = useState(false); // Flag to track if confirmAdminEmail has been called
 
-  const initialConfirmMailCheck = async () => {
+  const initialConfirmMailCheck = () => {
     try {
-      const result = await dispatch(confirmAdminEmail(token));
-      console.log(result.payload);
-      if (result.payload.status === 200) {
+      const result = dispatch(confirmAdminEmail(token));
+          if (result?.payload?.status === 200) {
         const { token, admin } = result.data.data;
         dispatch(userLoggedIn({ accessToken: token, admin: admin }));
         if (isSuccess && !isLoading) {
@@ -28,7 +28,6 @@ const EmailVerification = () => {
           notifySuccess("Register Success!");
         }
       } else if (result?.payload?.status === 403) {
-        console.log("403");
         notifyError(result?.payload?.data?.error);
         setTimeout(() => {
           navigate("/login");
@@ -46,10 +45,11 @@ const EmailVerification = () => {
   };
 
   useEffect(() => {
-    if (token !== undefined && token !== null) {
+    if (token !== undefined && token !== null && !isConfirmed) {
+      setIsConfirmed(true); // Set the flag to true to prevent multiple calls
       initialConfirmMailCheck();
     }
-  }, [token]);
+  }, []);
 
   return (
     <section className="crancy-EmailVerification">

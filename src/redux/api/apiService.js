@@ -13,6 +13,9 @@ const handleErrorResponseForToken = async (err) => {
     if (err.response.status === 401) {
       //Add a toast or error display mechanism and logout
     }
+    if (err.response.status === 403) {
+      return err.response.data;
+    }
   } else {
     return err;
   }
@@ -22,6 +25,10 @@ const handleErrorResponse = async (err) => {
     if (err.response.status === 401) {
       //Add a toast or error display mechanism and logout
       logoutUser();
+    }
+    if (err.response.status === 403) {
+      //Add a toast or error display mechanism and logout
+      console.log(err.response);
     }
   } else {
     return err;
