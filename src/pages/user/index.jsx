@@ -6,17 +6,17 @@ import SearchBar from "../../component/user/SearchBar";
 import UsersCom from "../../component/user/UsersCom";
 import Sidebar3 from "../../component/user/Sidebar3";
 import useMenu from "../../hooks/useMenu";
-import { useGetUserQuery } from "../../redux/features/auth/authApi";
+// import { useGetAllUsersQuery } from "../../redux/features/auth/authApi";
 const Users = () => {
   useMenu();
-  const [getAllUser, {}] = useGetUserQuery();
-  const abc = async () => {
-    const data = await getAllUser();
-    console.log(data);
-  };
-  useEffect(() => {
-    abc();
-  }, []);
+  // const [getAllUsers, {}] = useGetAllUsersQuery();
+  // const abc = async () => {
+  //   const data = await getAllUsers();
+  //   console.log(data);
+  // };
+  // useEffect(() => {
+  //   abc();
+  // }, []);
 
   return (
     <Layout>

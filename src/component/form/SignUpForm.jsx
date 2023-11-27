@@ -6,8 +6,9 @@ import googleLogo from "../../assets/img/google-logo.png";
 import appleLogo from "../../assets/img/apple-logo.png";
 import ErrorMsg from "../../component/common/error-msg";
 import { notifyError, notifySuccess } from "../../utils/toast";
-import { useRegisterUserMutation } from "../../redux/features/auth/authApi";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { adminSignup } from "../../redux/features/auth/authSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("First name is required"),
@@ -19,9 +20,8 @@ const validationSchema = Yup.object().shape({
 
 function SignUpForm() {
   const [showPass, setShowPass] = React.useState(false);
-  const [registerUser, {}] = useRegisterUserMutation();
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleGoogleSignUp = async () => {
     // Handle Google sign-up logic
   };
@@ -40,17 +40,18 @@ function SignUpForm() {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const data = await registerUser({
-          name: formik.values.name,
-          email: formik.values.email,
-          password: formik.values.password,
-          role: "Super Admin",
-        });
-        console.log(data);
-        if (data?.error) {
+        const data = await dispatch(
+          adminSignup({
+            name: formik.values.name,
+            email: formik.values.email,
+            password: formik.values.password,
+            role: "Super Admin",
+          })
+        );
+        if (data?.payload?.status !== 200) {
           notifyError("Register Failed");
         } else {
-          notifySuccess(data?.data?.message);
+          notifySuccess(data?.payload?.data?.message);
           setTimeout(() => {
             navigate("/login");
           }, 2000);
