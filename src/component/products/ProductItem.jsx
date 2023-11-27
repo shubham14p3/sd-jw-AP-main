@@ -2,8 +2,10 @@ import React from "react";
 import dotIcon from "../../assets/img/dots.svg";
 import { Link } from "react-router-dom";
 
-function TransactionItem({ transaction }) {
-  const { id, img, customerName, date, amount, payment, status } = transaction;
+function ProductItem({ product }) {
+  console.log(product);
+
+  const { id, img, title, createdAt, price, payment, status, brand } = product;
 
   return (
     <tr>
@@ -18,16 +20,19 @@ function TransactionItem({ transaction }) {
             />
             <label htmlFor="checkbox" className="crancy-table__customer-img">
               <img src={img} alt="#" />
-              <h4 className="crancy-table__product-title">{customerName}</h4>
+              <h4 className="crancy-table__product-title">{title}</h4>
             </label>
           </div>
         </div>
       </td>
       <td className="crancy-table__column-2 crancy-table__data-2">
-        <h4 className="crancy-table__product-title">{date}</h4>
+        <h4 className="crancy-table__product-title">{brand.name}</h4>
+      </td>
+      <td className="crancy-table__column-2 crancy-table__data-2">
+        <h4 className="crancy-table__product-title">{createdAt}</h4>
       </td>
       <td className="crancy-table__column-3 crancy-table__data-3">
-        <h4 className="crancy-table__product-title">{amount}</h4>
+        <h4 className="crancy-table__product-title">{price}</h4>
       </td>
       <td className="crancy-table__column-4 crancy-table__data-4">
         <div
@@ -62,4 +67,4 @@ function TransactionItem({ transaction }) {
   );
 }
 
-export default TransactionItem;
+export default ProductItem;

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { transactions } from "../../data/transactions";
-import TransactionItem from "./TransactionItem";
+import ProductItem from "./ProductItem";
 import filterIcon from "../../assets/img/filter-icon3.svg";
 import calendarIcon from "../../assets/img/calendar-icon-2.svg";
 import downloadIcon from "../../assets/img/download-icon2.svg";
 
-function ProductsList({ className }) {
+function ProductsList({ className, products }) {
   const [page, setPage] = useState(1);
   const [show, setShow] = useState(25);
   return (
@@ -100,6 +100,9 @@ function ProductsList({ className }) {
                     </div>
                   </th>
                   <th className="crancy-table__column-2 crancy-table__h2">
+                    Brand
+                  </th>
+                  <th className="crancy-table__column-2 crancy-table__h2">
                     Date
                   </th>
                   <th className="crancy-table__column-3 crancy-table__h3">
@@ -115,7 +118,7 @@ function ProductsList({ className }) {
               </thead>
               {/* <!-- crancy Table Body --> */}
               <tbody className="crancy-table__body">
-                {transactions?.map((transaction, index) => {
+                {products?.map((product, index) => {
                   const current = page * show;
                   const previous = current - show;
                   if (
@@ -124,18 +127,12 @@ function ProductsList({ className }) {
                     index + 1 <= current
                   ) {
                     return (
-                      <TransactionItem
-                        transaction={transaction}
-                        key={index + "key"}
-                      />
+                      <ProductItem product={product} key={index + "key"} />
                     );
                   } else if (page == 1) {
                     return (
                       index < page * show && (
-                        <TransactionItem
-                          transaction={transaction}
-                          key={index + "key"}
-                        />
+                        <ProductItem product={product} key={index + "key"} />
                       )
                     );
                   }

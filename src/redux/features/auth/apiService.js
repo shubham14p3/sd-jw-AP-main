@@ -26,7 +26,7 @@ export const adminSignupApi = async (payload) =>
   );
   export const fetchAllProductsApi = async () =>
   apiService.getData(
-    `${NEXT_PUBLIC_API_BASE_URL}/all/`
+    `${NEXT_PUBLIC_API_BASE_URL}/product/all`
   );
 
   

@@ -6,7 +6,7 @@ import {
   confirmAdminEmailApi,
   fetchAllUserApi,
   fetchAdminUserByIdApi,
-  fetchAllProductsApi
+  fetchAllProductsApi,
 } from "./apiService";
 
 const initialState = {
@@ -83,7 +83,7 @@ export const fetchAllProducts = createAsyncThunk(
     try {
       const result = await fetchAllProductsApi();
       const { data } = result.data;
-      thunkAPI.dispatch(fetchAllUserDetails({ productList: data }));
+      thunkAPI.dispatch(fetchAllProductsDetails({ productList: data }));
     } catch (error) {
       throw error;
     }
@@ -122,6 +122,9 @@ const authSlice = createSlice({
     fetchAllUserDetails: (state, action) => {
       state.usersList = action.payload.usersList;
     },
+    fetchAllProductsDetails: (state, action) => {
+      state.productList = action.payload.productList;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -140,8 +143,12 @@ const authSlice = createSlice({
   },
 });
 
-export const { userLoggedIn, userLoggedOut, fetchAllUserDetails } =
-  authSlice.actions;
+export const {
+  userLoggedIn,
+  userLoggedOut,
+  fetchAllUserDetails,
+  fetchAllProductsDetails,
+} = authSlice.actions;
 
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectUser = (state) => state.auth.loggedinUser;
