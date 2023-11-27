@@ -8,9 +8,8 @@ import ProfileHeader from "../../component/profile-overview/ProfileHeader";
 import SidebarProfile from "../../component/profile-overview/SidebarProfile";
 import TabList from "../../component/profile-overview/TabList";
 import useMenu from "../../hooks/useMenu";
-import { selectUser } from "../../redux/features/auth/authSlice";
 function ProfileOverview({ children }) {
-  const user = useSelector(selectUser);
+  const user = useSelector((state) => state.auth.loggedinUser);
   useMenu();
   return (
     <Layout>
@@ -19,7 +18,7 @@ function ProfileOverview({ children }) {
         <ProfileHeader />
         <div className="crancy-upinner">
           <div className="row">
-            <SidebarProfile user={user}/>
+            <SidebarProfile user={user} />
             <div className="col-lg-8 col-12 crancy-upinner__column2">
               <div className="crancy-upcontent mg-top-30">
                 <TabList />

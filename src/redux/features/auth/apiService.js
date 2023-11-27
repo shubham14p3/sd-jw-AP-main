@@ -16,6 +16,10 @@ export const adminSignupApi = async (payload) =>
   apiService.getData(
     `${NEXT_PUBLIC_API_BASE_URL}/admin/confirmEmail/${token}`
   );
+  export const fetchAllUserApi = async (token) =>
+  apiService.getData(
+    `${NEXT_PUBLIC_API_BASE_URL}/user/all`
+  );
 
   
 // export const getTokenForUser = async (payload) =>

@@ -4,11 +4,12 @@ import {
   adminLoginApi,
   adminSignupApi,
   confirmAdminEmailApi,
+  fetchAllUserApi,
 } from "./apiService";
 
 const initialState = {
   accessToken: undefined,
-  admin: undefined,
+  loggedinUser: undefined,
   usersList: [],
   isLoading: false,
   isSuccess: false,
@@ -19,14 +20,17 @@ export const adminLogin = createAsyncThunk(
   async (Username, thunkAPI) => {
     try {
       const result = await adminLoginApi(Username);
+
       const { token, admin } = result.data.data;
       Cookies.set(
         "userInfo",
-        JSON.stringify({ accessToken: token, admin: admin }),
+        JSON.stringify({ accessToken: token, loggedinUser: admin }),
         { expires: 0.5 }
       );
 
-      thunkAPI.dispatch(userLoggedIn({ accessToken: token, admin: admin }));
+      thunkAPI.dispatch(
+        userLoggedIn({ accessToken: token, loggedinUser: admin })
+      );
       return result?.status;
     } catch (error) {
       throw error;
@@ -44,7 +48,7 @@ export const adminSignup = createAsyncThunk(
     }
   }
 );
-//POST
+//get
 export const confirmAdminEmail = createAsyncThunk(
   "Admin/SignupEmailVerify",
   async (token, thunkAPI) => {
@@ -57,20 +61,34 @@ export const confirmAdminEmail = createAsyncThunk(
   }
 );
 //get
+export const fetchAllUser = createAsyncThunk(
+  "Admin/SignupEmailVerify",
+  async (token, thunkAPI) => {
+    try {
+      const result = await fetchAllUserApi();
+      const { data } = result.data;
+      thunkAPI.dispatch(fetchAllUserDetails({ usersList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+//slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     userLoggedIn: (state, { payload }) => {
       state.accessToken = payload.accessToken;
-      state.user = payload.user;
+      state.loggedinUser = payload.loggedinUser;
     },
     userLoggedOut: (state) => {
       state.accessToken = undefined;
-      state.user = undefined;
+      state.loggedinUser = undefined;
       Cookies.remove("userInfo");
     },
-    allUserDetails: (state, action) => {
+    fetchAllUserDetails: (state, action) => {
       state.usersList = action.payload.usersList;
     },
   },
@@ -91,10 +109,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { userLoggedIn, userLoggedOut, allUserDetails } =
+export const { userLoggedIn, userLoggedOut, fetchAllUserDetails } =
   authSlice.actions;
 
 export const selectAccessToken = (state) => state.auth.accessToken;
-export const selectUser = (state) => state.auth.user;
+export const selectUser = (state) => state.auth.loggedinUser;
 
 export default authSlice.reducer;

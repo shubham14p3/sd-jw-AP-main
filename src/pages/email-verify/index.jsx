@@ -33,7 +33,6 @@ const EmailVerification = () => {
           navigate("/login");
         }, 2000);
       } else {
-        console.log("else");
         notifyError("Something went wrong. Retry Again!");
         setTimeout(() => {
           navigate("/login");
