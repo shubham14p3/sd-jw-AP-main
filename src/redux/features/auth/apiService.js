@@ -20,6 +20,14 @@ export const adminSignupApi = async (payload) =>
   apiService.getData(
     `${NEXT_PUBLIC_API_BASE_URL}/user/all`
   );
+  export const fetchAdminUserByIdApi = async (id) =>
+  apiService.getData(
+    `${NEXT_PUBLIC_API_BASE_URL}/getAdminUserById/${id}`
+  );
+  export const fetchAllProductsApi = async () =>
+  apiService.getData(
+    `${NEXT_PUBLIC_API_BASE_URL}/all/`
+  );
 
   
 // export const getTokenForUser = async (payload) =>

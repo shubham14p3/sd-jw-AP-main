@@ -5,12 +5,15 @@ import {
   adminSignupApi,
   confirmAdminEmailApi,
   fetchAllUserApi,
+  fetchAdminUserByIdApi,
+  fetchAllProductsApi
 } from "./apiService";
 
 const initialState = {
   accessToken: undefined,
   loggedinUser: undefined,
   usersList: [],
+  productList: [],
   isLoading: false,
   isSuccess: false,
 };
@@ -68,6 +71,34 @@ export const fetchAllUser = createAsyncThunk(
       const result = await fetchAllUserApi();
       const { data } = result.data;
       thunkAPI.dispatch(fetchAllUserDetails({ usersList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//get
+export const fetchAllProducts = createAsyncThunk(
+  "Admin/SignupEmailVerify",
+  async (token, thunkAPI) => {
+    try {
+      const result = await fetchAllProductsApi();
+      const { data } = result.data;
+      thunkAPI.dispatch(fetchAllUserDetails({ productList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//get
+export const fetchAdminUserById = createAsyncThunk(
+  "Admin/SignupEmailVerify",
+  async (id, thunkAPI) => {
+    try {
+      const result = await fetchAdminUserByIdApi(id);
+      const { data } = result.data;
+      thunkAPI.dispatch(
+        userLoggedIn({ accessToken: token, loggedinUser: admin })
+      );
     } catch (error) {
       throw error;
     }

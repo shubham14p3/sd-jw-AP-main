@@ -219,6 +219,7 @@ function Menu({ toggleMenu, menu }) {
                   { link: "error-page", title: "Error Page" },
                 ]}
               />
+              {/* Author Pages */}
               <Dropdown
                 name="Author Pages"
                 dropdown={dropdown}
@@ -244,6 +245,33 @@ function Menu({ toggleMenu, menu }) {
                   { link: "password-success", title: "Success" },
                 ]}
               />
+              {/* products */}
+              <li
+                className={location.pathname === "/products" ? "active" : ""}
+              >
+                <Link className="collapsed" to="/products">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="20"
+                        height="22"
+                        viewBox="0 0 20 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 9H14M6 13H14M6 17H10M6 3C6 4.10457 6.89543 5 8 5H12C13.1046 5 14 4.10457 14 3M6 3C6 1.89543 6.89543 1 8 1H12C13.1046 1 14 1.89543 14 3M6 3H5C2.79086 3 1 4.79086 1 7V17C1 19.2091 2.79086 21 5 21H15C17.2091 21 19 19.2091 19 17V7C19 4.79086 17.2091 3 15 3H14"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Products</span>
+                  </span>
+                </Link>
+              </li>
+              {/* transaction */}
               <li
                 className={location.pathname === "/transaction" ? "active" : ""}
               >
@@ -269,6 +297,7 @@ function Menu({ toggleMenu, menu }) {
                   </span>
                 </Link>
               </li>
+              {/* notifications */}
               <li
                 className={
                   location.pathname === "/notifications" ? "active" : ""
