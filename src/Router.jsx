@@ -41,6 +41,7 @@ import SettingsFaq from "./pages/settings/faq";
 import TermsAndCondition from "./pages/settings/terms-and-conditions";
 import SupportTicket from "./pages/support-ticket";
 import PrivateRoute from "./PrivateRoute";
+import EmailVerification from "./pages/email-verify";
 
 const router = createBrowserRouter([
   {
@@ -220,6 +221,10 @@ const router = createBrowserRouter([
   {
     path: "/error-page",
     element: <Error />,
+  },
+  {
+    path: "/email-verify/:token",
+    element: <EmailVerification />,
   },
 ]);
 

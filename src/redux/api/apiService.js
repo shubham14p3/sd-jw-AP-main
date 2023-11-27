@@ -48,27 +48,28 @@ export const getData = (url, params = {}) => {
   //   useAuthCheck,
   //   "eyJhbGciOiJIUzI1NiJ9.eyJmaXJzdE5hbWUiOiJEZWVwYWsiLCJsYXN0TmFtZSI6Ikt1bWFyIiwidXNlcklkIjoiNjc5OSIsImVtYWlsIjoiZGtAYWJjLmNvbSIsInN1YiI6ImRrMTIzIiwiaWF0IjoxNjkyNjA4Njc2LCJleHAiOjE2OTI2OTUwNzd9.-IUJf2cnq1PBnj-4b3CYYKiHOLPmVE-Y5S8nu-JRofo"
   // );
-
-  headersObj.Authorization = returnTokenWithBearer(
-    localStorage.getItem(useAuthCheckeAuthCheck)
-  );
-
+  //Faltu kaheader chweck need to mrove
+  // headersObj.Authorization = returnTokenWithBearer(
+  //   localStorage.getItem(useAuthCheckeAuthCheck)
+  // );
   const additionalHeaders = {
     "Access-Control-Allow-Origin": "*",
     // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
   };
 
   const headers = {
-    ...headersObj,
+    // ...headersObj,
     ...additionalHeaders,
   };
-
   return axios
     .get(url, {
       headers: headers,
     })
     .then((res) => handleSuccessResponse(res))
-    .catch((err) => handleErrorResponse(err, { type: "GET", url }));
+    .catch((err) => {
+      handleErrorResponse(err, { type: "GET", url });
+      return err;
+    });
 };
 
 // post method
