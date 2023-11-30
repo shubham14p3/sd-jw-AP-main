@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import logo from "../../assets/img/logo-dark.png";
 import logoWhite from "../../assets/img/logo-white.png";
 import logo from "../../assets/img/logo.png";
@@ -10,12 +10,21 @@ import inboxAuthor from "../../assets/img/inbox-author.png";
 import signInIcon from "../../assets/img/support-sign-icon.svg";
 import Dropdown from "./Dropdown";
 import bg from "../../assets/img/support-bg.png";
+import { useDispatch } from "react-redux";
+import { userLoggedOut } from "../../redux/features/auth/authSlice";
 
-function Menu({ toggleMenu, menu }) {
+const Menu=({ toggleMenu, menu })=> {
   const [dropdown, setDropdown] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
   const handleDropdown = (name) => {
     setDropdown(name === dropdown ? "" : name);
+  };
+  
+  const handleLogout = () => {
+    dispatch(userLoggedOut());
+    navigate("/");
   };
   return (
     <div className={`crancy-smenu ${menu && "crancy-close"}`} id="CrancyMenu">
@@ -547,7 +556,7 @@ function Menu({ toggleMenu, menu }) {
                 </Link>
               </li>
               <li>
-                <Link to="#!" className="collapsed">
+                <Link to="#!" className="collapsed" onClick={handleLogout}>
                   <span className="menu-bar__text">
                     <span className="crancy-menu-icon crancy-svg-icon__v1">
                       <svg

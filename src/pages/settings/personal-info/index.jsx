@@ -2,7 +2,7 @@ import React from "react";
 import imgProfile from "../../../assets/img/profile-side.png";
 import coverImg from "../../../assets/img/side-cover.png";
 
-function PersonalInfo() {
+const PersonalInfo = () => {
   return (
     <div className="tab-pane fade show active">
       <form action="#">
@@ -300,6 +300,6 @@ function PersonalInfo() {
       </form>
     </div>
   );
-}
+};
 
 export default PersonalInfo;
