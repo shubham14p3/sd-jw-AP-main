@@ -80,6 +80,7 @@ export const updateAdminUserById = createAsyncThunk(
         thunkAPI.dispatch(
           userLoggedIn({ accessToken: token, loggedinUser: admin })
         );
+        return result?.data;
       }
     } catch (error) {
       throw error;

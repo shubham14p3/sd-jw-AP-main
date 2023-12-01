@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { updateAdminUserById } from "../../../redux/features/auth/authSlice";
+import { notifySuccess } from "../../../utils/toast";
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string().required("First Name is required"),
   // lastName: Yup.string().required("Last Name is required"),
@@ -32,7 +33,8 @@ const validationSchema = Yup.object().shape({
   firstName: Yup.string(),
   lastName: Yup.string(),
   email: Yup.string().email("Invalid email address"),
-  mobile: Yup.string(),
+  mobileNo: Yup.string(),
+  faxNo: Yup.string(),
   gender: Yup.string(),
   country: Yup.string(),
   facebook: Yup.string(),
@@ -45,10 +47,13 @@ const validationSchema = Yup.object().shape({
 const PersonalInfo = () => {
   const user = useSelector((state) => state.auth.loggedinUser);
   const dispatch = useDispatch();
+
+  const [image, setImage] = useState('');
   const formik = useFormik({
     initialValues: {
       firstName: user.firstName || "",
       lastName: user.lastName || "",
+      profilePic: user.profilePic||'',
       email: user.email || "",
       mobileNo: user.mobileNo || "9180",
       faxNo: user.faxNo || "+9180",
@@ -76,20 +81,71 @@ const PersonalInfo = () => {
       pinterest: user.pinterest || "",
       linkedin: user.linkedIn || "",
       instagram: user.instagram || "",
-      id:user._id||""
+      id: user._id || "",
     },
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-      dispatch(updateAdminUserById(values))
-      setIsEditMode(true);
+      const result = await dispatch(updateAdminUserById(values));
+      if (result?.payload?.status == 200) {
+        notifySuccess(`${result?.payload?.message}`);
+      } else {
+        notifyError("Unable to update . Try Again");
+        formik.resetForm();
+      }
     },
   });
-
   const handleCancel = () => {
     formik.resetForm();
-    setIsEditMode(true);
   };
+  const profilePicToBase64 = (e) => {
+    const file = e.target.files[0];
+    // Check if a file is selected
+    if (file) {
+      console.log("file", file);
+      // Check file type
+      const acceptedFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!acceptedFileTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+      // Check image dimensions
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        if (
+          !(
+            img.width >= 50 &&
+            img.width <= 300 &&
+            img.height >= 50 &&
+            img.height <= 300
+          )
+        ) {
+          alert("Image dimensions must be between 50x50 and 300x300 pixels.");
+          return;
+        }
+        // Check file size
+        const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSizeInBytes) {
+          alert("File size exceeds the maximum limit (5MB).");
+          return;
+        }
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImage(reader.result);
+          formik.setFieldValue("profilePic", reader.result);
+        };
+        reader.onerror = () => {
+          console.error("Error reading file.");
+        };
+      };
+    }
+  };
+  useEffect(() => {
+    setImage(formik.values.profilePic);
+  }, [formik.values.profilePic]);
   return (
     <div className="tab-pane fade show active">
       <form onSubmit={formik.handleSubmit}>
@@ -173,17 +229,19 @@ const PersonalInfo = () => {
                     <div className="row">
                       <div className="col-lg-6 col-12">
                         <div className="crancy__item-form--group mg-top-form-20">
-                          <label className="crancy__item-label">MobileNo</label>
+                          <label className="crancy__item-label">
+                            Mobile No
+                          </label>
 
                           <input
                             className="crancy__item-input"
-                            placeholder={formik.values.faxNo}
+                            placeholder={formik.values.mobileNo}
                             type="text"
-                            id="faxNo"
-                            name="faxNo"
+                            id="mobileNo"
+                            name="mobileNo"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.faxNo}
+                            value={formik.values.mobileNo}
                           />
 
                           {formik.touched.mobileNo && formik.errors.mobileNo ? (
@@ -199,13 +257,13 @@ const PersonalInfo = () => {
 
                           <input
                             className="crancy__item-input"
-                            placeholder={formik.values.mobileNo}
+                            placeholder={formik.values.faxNo}
                             type="text"
-                            id="mobileNo"
-                            name="mobileNo"
+                            id="faxNo"
+                            name="faxNo"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.mobileNo}
+                            value={formik.values.faxNo}
                           />
 
                           {formik.touched.faxNo && formik.errors.faxNo ? (
@@ -279,7 +337,15 @@ const PersonalInfo = () => {
                     </div>
                     <div className="crancy-ptabs__sauthor">
                       <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
-                        <img src={imgProfile} alt="#" />
+                        <img
+                          src={`${image}`}
+                          alt="Profile Pic"
+                          style={{
+                            width: "178px",
+                            height: "178px",
+                            objectFit: "cover",
+                          }}
+                        />
                         <label
                           className="crancy-ptabs__sedit"
                           htmlFor="file-input"
@@ -301,7 +367,12 @@ const PersonalInfo = () => {
                             </svg>
                           </span>
                         </label>
-                        <input id="file-input" type="file" />
+                        <input
+                          id="file-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={profilePicToBase64}
+                        />
                       </div>
                     </div>
                   </div>
