@@ -7,6 +7,7 @@ import {
   fetchAllUserApi,
   fetchAdminUserByIdApi,
   fetchAllProductsApi,
+  updateAdminUserByIdApi,
 } from "./apiService";
 
 const initialState = {
@@ -63,6 +64,28 @@ export const confirmAdminEmail = createAsyncThunk(
     }
   }
 );
+//patch
+export const updateAdminUserById = createAsyncThunk(
+  "Admin/SignupEmailVerify",
+  async (values, thunkAPI) => {
+    try {
+      const result = await updateAdminUserByIdApi(values.id, values);
+      if (result?.status === 200) {
+        const { token, admin } = result?.data;
+        Cookies.set(
+          "userInfo",
+          JSON.stringify({ accessToken: token, loggedinUser: admin }),
+          { expires: 0.5 }
+        );
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: token, loggedinUser: admin })
+        );
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 //get
 export const fetchAllUser = createAsyncThunk(
   "Admin/SignupEmailVerify",
@@ -95,7 +118,7 @@ export const fetchAdminUserById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const result = await fetchAdminUserByIdApi(id);
-      const { data } = result.data;
+      const { token, admin } = result.data.data;
       thunkAPI.dispatch(
         userLoggedIn({ accessToken: token, loggedinUser: admin })
       );

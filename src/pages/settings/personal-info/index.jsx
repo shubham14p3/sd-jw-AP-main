@@ -4,37 +4,50 @@ import coverImg from "../../../assets/img/side-cover.png";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { updateAdminUserById } from "../../../redux/features/auth/authSlice";
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required("First Name is required"),
-  lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  mobile: Yup.string().required("Mobile is required"),
-  gender: Yup.string().required("Gender is required"),
-  country: Yup.string().required("Country is required"),
-  facebook: Yup.string()
-    .url("Invalid URL")
-    .required("Facebook URL is required"),
-  youtube: Yup.string().url("Invalid URL").required("Youtube URL is required"),
-  twitter: Yup.string().url("Invalid URL").required("Twitter URL is required"),
-  pinterest: Yup.string()
-    .url("Invalid URL")
-    .required("Pinterest URL is required"),
-  linkedin: Yup.string()
-    .url("Invalid URL")
-    .required("LinkedIn URL is required"),
-  instagram: Yup.string()
-    .url("Invalid URL")
-    .required("Instagram URL is required"),
+  // firstName: Yup.string().required("First Name is required"),
+  // lastName: Yup.string().required("Last Name is required"),
+  // email: Yup.string()
+  //   .email("Invalid email address")
+  //   .required("Email is required"),
+  // mobile: Yup.string().required("Mobile is required"),
+  // gender: Yup.string().required("Gender is required"),
+  // country: Yup.string().required("Country is required"),
+  // facebook: Yup.string()
+  //   .url("Invalid URL")
+  //   .required("Facebook URL is required"),
+  // youtube: Yup.string().url("Invalid URL").required("Youtube URL is required"),
+  // twitter: Yup.string().url("Invalid URL").required("Twitter URL is required"),
+  // pinterest: Yup.string()
+  //   .url("Invalid URL")
+  //   .required("Pinterest URL is required"),
+  // linkedin: Yup.string()
+  //   .url("Invalid URL")
+  //   .required("LinkedIn URL is required"),
+  // instagram: Yup.string()
+  //   .url("Invalid URL")
+  //   .required("Instagram URL is required"),
+  firstName: Yup.string(),
+  lastName: Yup.string(),
+  email: Yup.string().email("Invalid email address"),
+  mobile: Yup.string(),
+  gender: Yup.string(),
+  country: Yup.string(),
+  facebook: Yup.string(),
+  youtube: Yup.string(),
+  twitter: Yup.string(),
+  pinterest: Yup.string(),
+  linkedin: Yup.string(),
+  instagram: Yup.string(),
 });
 const PersonalInfo = () => {
   const user = useSelector((state) => state.auth.loggedinUser);
-  const [isEditMode, setIsEditMode] = useState(true);
-
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
-      firstName: user.fristName || "",
+      firstName: user.firstName || "",
       lastName: user.lastName || "",
       email: user.email || "",
       mobileNo: user.mobileNo || "9180",
@@ -46,7 +59,7 @@ const PersonalInfo = () => {
           : user.gender.toLowerCase() === "female" ||
             user.gender.toLowerCase() === "f"
           ? "2"
-          : "3" // default to "Other" if the gender is not recognized
+          : "3"
         : "0",
       country: user.country
         ? user.country.toLowerCase() === "india" ||
@@ -55,7 +68,7 @@ const PersonalInfo = () => {
           : user.country.toLowerCase() === "usa" ||
             user.country.toLowerCase() === "united states of america"
           ? "2"
-          : "3" // default to "Other" if the gender is not recognized
+          : "3"
         : "0",
       facebook: user.facebook || "",
       youtube: user.youTube || "",
@@ -63,10 +76,12 @@ const PersonalInfo = () => {
       pinterest: user.pinterest || "",
       linkedin: user.linkedIn || "",
       instagram: user.instagram || "",
+      id:user._id||""
     },
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
+      dispatch(updateAdminUserById(values))
       setIsEditMode(true);
     },
   });
@@ -93,22 +108,18 @@ const PersonalInfo = () => {
                           <label className="crancy__item-label">
                             Frist Name{" "}
                           </label>
-                          {isEditMode ? (
-                            <input
-                              className="crancy__item-input"
-                              placeholder={formik.values.firstName}
-                              type="text"
-                              id="firstName"
-                              name="firstName"
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              value={formik.values.firstName}
-                            />
-                          ) : (
-                            <div className="form-control">
-                              {formik.values.firstName}
-                            </div>
-                          )}
+
+                          <input
+                            className="crancy__item-input"
+                            placeholder={formik.values.firstName}
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.firstName}
+                          />
+
                           {formik.touched.firstName &&
                           formik.errors.firstName ? (
                             <div style={{ color: "red" }}>
@@ -122,22 +133,18 @@ const PersonalInfo = () => {
                           <label className="crancy__item-label">
                             Last Name{" "}
                           </label>
-                          {isEditMode ? (
-                            <input
-                              className="crancy__item-input"
-                              placeholder={formik.values.lastName}
-                              type="text"
-                              id="lastName"
-                              name="lastName"
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              value={formik.values.lastName}
-                            />
-                          ) : (
-                            <div className="form-control">
-                              {formik.values.lastName}
-                            </div>
-                          )}
+
+                          <input
+                            className="crancy__item-input"
+                            placeholder={formik.values.lastName}
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.lastName}
+                          />
+
                           {formik.touched.lastName && formik.errors.lastName ? (
                             <div style={{ color: "red" }}>
                               {formik.errors.lastName}
@@ -146,48 +153,39 @@ const PersonalInfo = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div>{" "}
                   <div className="crancy__item-form--group mg-top-form-20">
                     <label className="crancy__item-label">Email Address</label>
-                    {isEditMode ? (
-                      <input
-                        className="crancy__item-input"
-                        placeholder={formik.values.email}
-                        type="email"
-                        id="email"
-                        name="email"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                      />
-                    ) : (
-                      <div className="form-control">{formik.values.email}</div>
-                    )}
-                    {formik.touched.email && formik.errors.email ? (
-                      <div style={{ color: "red" }}>{formik.errors.email}</div>
-                    ) : null}
+
+                    <input
+                      className="crancy__item-input"
+                      placeholder={formik.values.email}
+                      type="email"
+                      id="email"
+                      name="email"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email}
+                      disabled
+                    />
                   </div>
                   <div className="crancy__item-form--group">
                     <div className="row">
                       <div className="col-lg-6 col-12">
                         <div className="crancy__item-form--group mg-top-form-20">
                           <label className="crancy__item-label">MobileNo</label>
-                          {isEditMode ? (
-                            <input
-                              className="crancy__item-input"
-                              placeholder={formik.values.faxNo}
-                              type="text"
-                              id="faxNo"
-                              name="faxNo"
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              value={formik.values.faxNo}
-                            />
-                          ) : (
-                            <div className="form-control">
-                              {formik.values.mobileNo}
-                            </div>
-                          )}
+
+                          <input
+                            className="crancy__item-input"
+                            placeholder={formik.values.faxNo}
+                            type="text"
+                            id="faxNo"
+                            name="faxNo"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.faxNo}
+                          />
+
                           {formik.touched.mobileNo && formik.errors.mobileNo ? (
                             <div style={{ color: "red" }}>
                               {formik.errors.mobileNo}
@@ -198,22 +196,18 @@ const PersonalInfo = () => {
                       <div className="col-lg-6 col-12">
                         <div className="crancy__item-form--group mg-top-form-20">
                           <label className="crancy__item-label">Fax</label>
-                          {isEditMode ? (
-                            <input
-                              className="crancy__item-input"
-                              placeholder={formik.values.mobileNo}
-                              type="text"
-                              id="mobileNo"
-                              name="mobileNo"
-                              onChange={formik.handleChange}
-                              onBlur={formik.handleBlur}
-                              value={formik.values.mobileNo}
-                            />
-                          ) : (
-                            <div className="form-control">
-                              {formik.values.faxNo}
-                            </div>
-                          )}
+
+                          <input
+                            className="crancy__item-input"
+                            placeholder={formik.values.mobileNo}
+                            type="text"
+                            id="mobileNo"
+                            name="mobileNo"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.mobileNo}
+                          />
+
                           {formik.touched.faxNo && formik.errors.faxNo ? (
                             <div style={{ color: "red" }}>
                               {formik.errors.faxNo}
@@ -225,65 +219,45 @@ const PersonalInfo = () => {
                   </div>
                   <div className="crancy__item-form--group  mg-top-form-20">
                     <label className="crancy__item-label">Select Gender</label>
-                    {isEditMode ? (
-                      <select
-                        className="form-select crancy__item-input"
-                        aria-label="Default select example"
-                        id="gender"
-                        name="gender"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.gender} // Set the value to formik's gender value
-                      >
-                        <option value="0">Select Gender</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
-                        <option value="3">Other</option>
-                      </select>
-                    ) : (
-                      <div className="form-control">
-                        {formik.values.gender === "1"
-                          ? "Male"
-                          : formik.values.gender === "2"
-                          ? "Female"
-                          : formik.values.gender === "3"
-                          ? "Other"
-                          : "Select Gender"}
-                      </div>
-                    )}
+
+                    <select
+                      className="form-select crancy__item-input"
+                      aria-label="Default select example"
+                      id="gender"
+                      name="gender"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.gender}
+                    >
+                      <option value="0">Select Gender</option>
+                      <option value="1">Male</option>
+                      <option value="2">Female</option>
+                      <option value="3">Other</option>
+                    </select>
+
                     {formik.touched.gender && formik.errors.gender ? (
                       <div style={{ color: "red" }}>{formik.errors.gender}</div>
                     ) : null}
                   </div>
                   <div className="crancy__item-form--group  mg-top-form-20">
                     <label className="crancy__item-label">Country</label>
-                    {isEditMode ? (
-                      <select
-                        className="form-select crancy__item-input"
-                        aria-label="Default select example"
-                        id="country"
-                        name="country"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.country}
-                      >
-                        <option value="0">Select country here</option>
-                        <option value="1">India</option>
-                        <option value="2">United States</option>
-                        <option value="3">United Kingdom</option>
-                        <option value="4">India</option>
-                      </select>
-                    ) : (
-                      <div className="form-control">
-                        {formik.values.country === "1"
-                          ? "India"
-                          : formik.values.country === "2"
-                          ? "United States"
-                          : formik.values.country === "3"
-                          ? "United Kingdom"
-                          : "Select country"}
-                      </div>
-                    )}
+
+                    <select
+                      className="form-select crancy__item-input"
+                      aria-label="Default select example"
+                      id="country"
+                      name="country"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.country}
+                    >
+                      <option value="0">Select country here</option>
+                      <option value="1">India</option>
+                      <option value="2">United States</option>
+                      <option value="3">United Kingdom</option>
+                      <option value="4">India</option>
+                    </select>
+
                     {formik.touched.location && formik.errors.location ? (
                       <div style={{ color: "red" }}>
                         {formik.errors.location}
@@ -381,22 +355,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group mg-top-form-20">
                       <label className="crancy__item-label">Facebook</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.facebook}
-                          type="url"
-                          id="facebook"
-                          name="facebook"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.facebook}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.facebook}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.facebook}
+                        type="text"
+                        id="facebook"
+                        name="facebook"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.facebook}
+                      />
+
                       {formik.touched.facebook && formik.errors.facebook ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.facebook}
@@ -407,22 +377,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group mg-top-form-20">
                       <label className="crancy__item-label">Youtube</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.youtube}
-                          type="url"
-                          id="youtube"
-                          name="youtube"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.youtube}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.youtube}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.youtube}
+                        type="text"
+                        id="youtube"
+                        name="youtube"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.youtube}
+                      />
+
                       {formik.touched.youtube && formik.errors.youtube ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.youtube}
@@ -433,22 +399,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group mg-top-form-20">
                       <label className="crancy__item-label">Twitter</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.twitter}
-                          type="url"
-                          id="twitter"
-                          name="twitter"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.twitter}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.twitter}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.twitter}
+                        type="text"
+                        id="twitter"
+                        name="twitter"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.twitter}
+                      />
+
                       {formik.touched.twitter && formik.errors.twitter ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.twitter}
@@ -459,22 +421,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group  mg-top-form-20">
                       <label className="crancy__item-label">Pinterest</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.pinterest}
-                          type="url"
-                          id="pinterest"
-                          name="pinterest"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.pinterest}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.pinterest}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.pinterest}
+                        type="text"
+                        id="pinterest"
+                        name="pinterest"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.pinterest}
+                      />
+
                       {formik.touched.pinterest && formik.errors.pinterest ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.pinterest}
@@ -485,22 +443,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group  mg-top-form-20">
                       <label className="crancy__item-label">Linkedin</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.linkedin}
-                          type="url"
-                          id="linkedin"
-                          name="linkedin"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.linkedin}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.linkedin}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.linkedin}
+                        type="text"
+                        id="linkedin"
+                        name="linkedin"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.linkedin}
+                      />
+
                       {formik.touched.linkedin && formik.errors.linkedin ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.linkedin}
@@ -511,22 +465,18 @@ const PersonalInfo = () => {
                   <div className="col-lg-6 col-12">
                     <div className="crancy__item-form--group  mg-top-form-20">
                       <label className="crancy__item-label">Instagram</label>
-                      {isEditMode ? (
-                        <input
-                          className="crancy__item-input"
-                          placeholder={formik.values.instagram}
-                          type="url"
-                          id="instagram"
-                          name="instagram"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.instagram}
-                        />
-                      ) : (
-                        <div className="form-control">
-                          {formik.values.instagram}
-                        </div>
-                      )}
+
+                      <input
+                        className="crancy__item-input"
+                        placeholder={formik.values.instagram}
+                        type="text"
+                        id="instagram"
+                        name="instagram"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.instagram}
+                      />
+
                       {formik.touched.instagram && formik.errors.instagram ? (
                         <div style={{ color: "red" }}>
                           {formik.errors.instagram}

@@ -105,6 +105,19 @@ export const postDataWithOutAuth = (url, body, isLogin = false) => {
     .catch((err) => handleErrorResponse(err), { type: "POST", url, body });
 };
 
+// patch method
+export const patchData = (url, body) => {
+  headersObj.Authorization = returnTokenWithBearer(
+    localStorage.getItem(useAuthCheck)
+  );
+  return axios
+    .patch(url, body, {
+      headers: headersObj,
+    })
+    .then((res) => handleSuccessResponse(res))
+    .catch((err) => handleErrorResponse(err), { type: "PATCH", url, body });
+};
+
 export const deleteData = (url, body, isLogin = false) => {
   headersObj.Authorization = returnTokenWithBearer(
     localStorage.getItem(useAuthCheck)

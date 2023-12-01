@@ -132,9 +132,15 @@ function Header({ toggleMenu, menu }) {
                           </div>
                         </div>
                         <div className="crancy-currency-author-styling ">
-                          <a className="crancy-currency-author-styling-anchor" href="#">{userList?userList.name.toUpperCase():'hi'}</a>
-                       
-                          <Author 
+                          <a
+                            className="crancy-currency-author-styling-anchor"
+                            href="#"
+                          >
+                            {userList ? userList.firstName.toUpperCase() : " "}{" "}
+                            {userList ? userList.lastName.toUpperCase() : " "}{" "}
+                          </a>
+
+                          <Author
                             subNav={subNav}
                             setSubNav={setSubNav}
                             title="author"
