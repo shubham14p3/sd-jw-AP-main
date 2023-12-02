@@ -54,6 +54,8 @@ const PersonalInfo = () => {
     initialValues: {
       firstName: user.firstName || "",
       lastName: user.lastName || "",
+      profilePic: user.profilePic || "",
+      profileCover: user.profileCover || "",
       email: user.email || "",
       mobileNo: user.mobileNo || "9180",
       faxNo: user.faxNo || "+9180",
@@ -98,6 +100,103 @@ const PersonalInfo = () => {
   const handleCancel = () => {
     formik.resetForm();
   };
+  const profilePicToBase64 = (e) => {
+    const file = e.target.files[0];
+    // Check if a file is selected
+    if (file) {
+      // Check file type
+      const acceptedFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!acceptedFileTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+      // Check image dimensions
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        if (
+          !(
+            img.width >= 50 &&
+            img.width <= 300 &&
+            img.height >= 50 &&
+            img.height <= 300
+          )
+        ) {
+          alert("Image dimensions must be between 50x50 and 300x300 pixels.");
+          return;
+        }
+        // Check file size
+        const minSizeInBytes = 1 * 1024; // 10KB
+        const maxSizeInBytes = 500 * 1024; // 500KB
+
+        if (file.size < minSizeInBytes || file.size > maxSizeInBytes) {
+          alert("File size should be between 10KB and 500KB.");
+          return;
+        }
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImage(reader.result);
+          formik.setFieldValue("profilePic", reader.result);
+        };
+        reader.onerror = () => {
+          console.error("Error reading file.");
+        };
+      };
+    }
+  };
+  const profileCoverToBase64 = (e) => {
+    const file = e.target.files[0];
+    // Check if a file is selected
+    if (file) {
+      // Check file type
+      const acceptedFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!acceptedFileTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+
+      // Check image dimensions
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const minWidth = 1018;
+        const minHeight = 155;
+
+        if (img.width < minWidth || img.height < minHeight) {
+          alert("Image dimensions should be at least 1170x920 pixels.");
+          return;
+        }
+
+        // Check file size
+        const minSizeInBytes = 1 * 1024; // 10KB
+        const maxSizeInBytes = 1 * 1024 * 1024; // 1mb
+        if (file.size < minSizeInBytes || file.size > maxSizeInBytes) {
+          alert("File size should be between 10KB and 500KB.");
+          return;
+        }
+
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImageCover(reader.result);
+          formik.setFieldValue("profileCover", reader.result);
+        };
+        reader.onerror = () => {
+          console.error("Error reading file.");
+        };
+      };
+    }
+  };
+
+  useEffect(() => {
+    setImage(formik.values.profilePic);
+  }, [formik.values.profilePic]);
+  useEffect(() => {
+    setImageCover(formik.values.profileCover);
+  }, [formik.values.profileCover]);
   return (
     <div className="tab-pane fade show active">
       <form onSubmit={formik.handleSubmit}>
@@ -290,7 +389,11 @@ const PersonalInfo = () => {
                     <div className="crancy-ptabs__sauthor">
                       <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
                         <img
-                          src={imgProfile}
+                          src={
+                            formik.values.profilePic == ""
+                              ? imgProfile
+                              : `${image}`
+                          }
                           alt="Profile Pic"
                           style={{
                             width: "178px",
@@ -319,7 +422,12 @@ const PersonalInfo = () => {
                             </svg>
                           </span>
                         </label>
-                        <input id="file-input" type="file" accept="image/*" />
+                        <input
+                          id="file-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={profilePicToBase64}
+                        />
                       </div>
                     </div>
                   </div>
@@ -336,7 +444,11 @@ const PersonalInfo = () => {
                     </div>
                     <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
                       <img
-                        src={coverImg}
+                        src={
+                          formik.values.profileCover == ""
+                            ? coverImg
+                            : `${imageCover}`
+                        }
                         alt="Profile Cover Pic"
                         style={{
                           width: "230px",
@@ -371,6 +483,7 @@ const PersonalInfo = () => {
                         id="profile-cover-input"
                         type="file"
                         accept="image/*"
+                        onChange={profileCoverToBase64}
                       />
                     </div>
                   </div>
