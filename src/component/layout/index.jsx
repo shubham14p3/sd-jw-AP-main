@@ -26,9 +26,7 @@ function Layout({ children }) {
           })
         );
       }
-    } else {
-      navigate("/");
-    }
+    } 
   }, [dispatch]);
   useEffect(() => {
     if (menu) {

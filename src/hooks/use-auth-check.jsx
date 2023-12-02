@@ -23,10 +23,7 @@ export default function useAuthCheck() {
           })
         );
       }
-    } else {
-      // If there is no localAuth, dispatch userLoggedOut
-      dispatch(userLoggedOut());
-    }
+    } 
     setAuthChecked(true);
   }, [dispatch, setAuthChecked]);
 

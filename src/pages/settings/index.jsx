@@ -25,8 +25,6 @@ const Settings = ({ children }) => {
           })
         );
       }
-    } else {
-      navigate("/");
     }
   }, [dispatch]);
   return (
