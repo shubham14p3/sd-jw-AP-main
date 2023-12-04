@@ -9,6 +9,7 @@ import {
   fetchAllProductsApi,
   updateAdminUserByIdApi,
   uploadAdminProfileImageApi,
+  uploadAdminProfileCoverImageApi
 } from "./apiService";
 
 const initialState = {
