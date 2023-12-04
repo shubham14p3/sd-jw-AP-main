@@ -63,6 +63,11 @@ export const getData = (url, params = {}) => {
     "Access-Control-Allow-Origin": "*",
     // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
   };
+  const additionalHeadersUploadSingleImg = {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "multipart/form-data",
+    // "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+  };
 
   const headers = {
     // ...headersObj,
@@ -89,6 +94,23 @@ export const postData = (url, body, isLogin = false) => {
   return axios
     .post(url, body, {
       headers: headersObj,
+    })
+    .then((res) => handleSuccessResponse(res))
+    .catch((err) => handleErrorResponse(err), { type: "POST", url, body });
+};
+// post method Img
+
+export const postDataImg = (url, body, isLogin = false) => {
+  headersObj.Authorization = returnTokenWithBearer(
+    localStorage.getItem(useAuthCheck)
+  );
+
+  return axios
+    .post(url, body, {
+      headers: {
+        // Note: You may not need to set Content-Type manually; the browser handles it for FormData.
+        "Content-Type": "multipart/form-data", // Include your authentication token if required
+      },
     })
     .then((res) => handleSuccessResponse(res))
     .catch((err) => handleErrorResponse(err), { type: "POST", url, body });

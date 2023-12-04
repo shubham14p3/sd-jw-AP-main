@@ -5,8 +5,16 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { updateAdminUserById } from "../../../redux/features/auth/authSlice";
-import { notifySuccess } from "../../../utils/toast";
+import {
+  updateAdminUserById,
+  uploadAdminProfileCoverImage,
+  uploadAdminProfileImage,
+} from "../../../redux/features/auth/authSlice";
+import { notifySuccess, notifyError } from "../../../utils/toast";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { FileUploader } from "react-drag-drop-files";
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string().required("First Name is required"),
   // lastName: Yup.string().required("Last Name is required"),
@@ -46,10 +54,11 @@ const validationSchema = Yup.object().shape({
 });
 const PersonalInfo = () => {
   const user = useSelector((state) => state.auth.loggedinUser);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const [isModalOpen, setModalOpen] = useState(false);
   const [image, setImage] = useState("");
-  const [imageCover, setImageCover] = useState("");
+  const [file, setFile] = useState(null);
   const formik = useFormik({
     initialValues: {
       firstName: user.firstName || "",
@@ -57,6 +66,8 @@ const PersonalInfo = () => {
       email: user.email || "",
       mobileNo: user.mobileNo || "9180",
       faxNo: user.faxNo || "+9180",
+      profilePic: user.profilePic || "",
+      profileCover: user.profileCover || "",
       gender: user.gender
         ? user.gender.toLowerCase() === "male" ||
           user.gender.toLowerCase() === "m"
@@ -98,6 +109,30 @@ const PersonalInfo = () => {
   const handleCancel = () => {
     formik.resetForm();
   };
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("image", file[0]);
+    const response = await dispatch(
+      uploadAdminProfileImage({ payload: formData, id: formik.values.id })
+    );
+    if (response?.payload?.data) {
+      // Show success alert
+      notifySuccess("Profile Updated successful");
+      setModalOpen(false);
+    } else {
+      // Show reject alert
+      notifyError("Try Again uploading the Profile image");
+    }
+  };
+
   return (
     <div className="tab-pane fade show active">
       <form onSubmit={formik.handleSubmit}>
@@ -290,7 +325,12 @@ const PersonalInfo = () => {
                     <div className="crancy-ptabs__sauthor">
                       <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
                         <img
-                          src={imgProfile}
+                          src={
+                            formik.values.profilePic &&
+                            formik.values.profilePic !== ""
+                              ? formik.values.profilePic
+                              : imgProfile
+                          }
                           alt="Profile Pic"
                           style={{
                             width: "178px",
@@ -301,6 +341,7 @@ const PersonalInfo = () => {
                         <label
                           className="crancy-ptabs__sedit"
                           htmlFor="file-input"
+                          onClick={handleOpenModal}
                         >
                           <span>
                             <svg
@@ -319,7 +360,7 @@ const PersonalInfo = () => {
                             </svg>
                           </span>
                         </label>
-                        <input id="file-input" type="file" accept="image/*" />
+                        {/* <input id="file-input" type="file" accept="image/*" /> */}
                       </div>
                     </div>
                   </div>
@@ -347,7 +388,7 @@ const PersonalInfo = () => {
                       <label
                         className="crancy-ptabs__sedit"
                         htmlFor="profile-cover-input"
-                      >
+                                              >
                         <span>
                           <svg
                             width="32"
@@ -367,7 +408,7 @@ const PersonalInfo = () => {
                           </svg>
                         </span>
                       </label>
-                      <input
+<input
                         id="profile-cover-input"
                         type="file"
                         accept="image/*"
@@ -566,7 +607,62 @@ const PersonalInfo = () => {
           </button>
         </div>
       </form>
+      <UploadPicModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        setFile={setFile}
+        uploadImage={uploadImage}
+        file={file}
+      />
     </div>
+  );
+};
+
+const UploadPicModal = ({ isOpen, onClose, setFile, file, uploadImage }) => {
+  const handleChange = (file) => {
+    setFile(file);
+  };
+  const fileTypes = ["JPEG", "PNG", "GIF"];
+  return (
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Box
+        sx={{
+          position: "absolute",
+          width: 500,
+          bgcolor: "background.paper",
+          border: "2px solid #000",
+          boxShadow: 24,
+          p: 4,
+        }}
+      >
+        <FileUploader
+          multiple={true}
+          handleChange={handleChange}
+          name="file"
+          types={fileTypes}
+        />
+        <br />
+        <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
+        <br />
+        <Button
+          disabled={file == "" || file == null || file == undefined}
+          onClick={uploadImage}
+        >
+          Confirm Submit
+        </Button>
+        <Button onClick={onClose}>Close Modal</Button>
+      </Box>
+    </Modal>
   );
 };
 

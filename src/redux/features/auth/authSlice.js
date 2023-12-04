@@ -8,6 +8,7 @@ import {
   fetchAdminUserByIdApi,
   fetchAllProductsApi,
   updateAdminUserByIdApi,
+  uploadAdminProfileImageApi,
 } from "./apiService";
 
 const initialState = {
@@ -17,6 +18,8 @@ const initialState = {
   productList: [],
   isLoading: false,
   isSuccess: false,
+  isImagUploadedSuccess: false,
+  isImageloadingSuccess: false,
 };
 //POST
 export const adminLogin = createAsyncThunk(
@@ -41,6 +44,41 @@ export const adminLogin = createAsyncThunk(
     }
   }
 );
+//POST
+export const uploadAdminProfileImage = createAsyncThunk(
+  "Admin/uploadAdminProfileImage",
+  async ({ payload, id }, thunkAPI) => {
+    try {
+      const result = await uploadAdminProfileImageApi(payload, id);
+      if (result && result?.status === 200) {
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+        );
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//POST
+export const uploadAdminProfileCoverImage = createAsyncThunk(
+  "Admin/uploadAdminProfileCoverImage",
+  async ({ payload, id }, thunkAPI) => {
+    try {
+      const result = await uploadAdminProfileCoverImageApi(payload, id);
+      if (result && result?.status === 200) {
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+        );
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const adminSignup = createAsyncThunk(
   "Admin/Signup",
   async (Username, thunkAPI) => {
@@ -66,7 +104,7 @@ export const confirmAdminEmail = createAsyncThunk(
 );
 //patch
 export const updateAdminUserById = createAsyncThunk(
-  "Admin/SignupEmailVerify",
+  "Admin/updateAdminUserById",
   async (values, thunkAPI) => {
     try {
       const result = await updateAdminUserByIdApi(values.id, values);
@@ -89,7 +127,7 @@ export const updateAdminUserById = createAsyncThunk(
 );
 //get
 export const fetchAllUser = createAsyncThunk(
-  "Admin/SignupEmailVerify",
+  "Admin/fetchAllUser",
   async (token, thunkAPI) => {
     try {
       const result = await fetchAllUserApi();
@@ -102,7 +140,7 @@ export const fetchAllUser = createAsyncThunk(
 );
 //get
 export const fetchAllProducts = createAsyncThunk(
-  "Admin/SignupEmailVerify",
+  "Admin/fetchAllProducts",
   async (token, thunkAPI) => {
     try {
       const result = await fetchAllProductsApi();
@@ -115,7 +153,7 @@ export const fetchAllProducts = createAsyncThunk(
 );
 //get
 export const fetchAdminUserById = createAsyncThunk(
-  "Admin/SignupEmailVerify",
+  "Admin/fetchAdminUserById",
   async (id, thunkAPI) => {
     try {
       const result = await fetchAdminUserByIdApi(id);
@@ -163,6 +201,21 @@ const authSlice = createSlice({
       .addCase(confirmAdminEmail.rejected, (state) => {
         state.isLoading = false;
         state.isSuccess = false;
+      })
+      .addCase(uploadAdminProfileImage.pending, (state) => {
+        state.isImagUploadedSuccess = false;
+        state.isImageloadingSuccess = true;
+        // handle pending state if needed
+      })
+      .addCase(uploadAdminProfileImage.fulfilled, (state, action) => {
+        // handle fulfilled state
+        state.isImagUploadedSuccess = true;
+        state.isImageloadingSuccess = false;
+      })
+      .addCase(uploadAdminProfileImage.rejected, (state, action) => {
+        // handle rejected state
+        state.isImagUploadedSuccess = false;
+        state.isImageloadingSuccess = false;
       });
   },
 });
