@@ -1020,6 +1020,13 @@ Version:	1.0.0
   align-items: center;
   gap: 30px;
 }
+.crancy-currency-author-styling {
+  display: flex;
+  align-items: center;  
+}
+.crancy-currency-author-styling-anchor{
+  margin-right: 10px;
+}
 .crancy-header__dropdown {
   display: flex;
   align-items: center;

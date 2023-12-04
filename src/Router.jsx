@@ -22,6 +22,7 @@ import ConfirmPassword from "./pages/confirm-password";
 import Verification from "./pages/verification";
 import PasswordSuccess from "./pages/password-success";
 import Transaction from "./pages/transaction";
+import Products from "./pages/products";
 import Notifications from "./pages/notifications";
 import Users from "./pages/user";
 import History from "./pages/history";
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
       {
         path: "/transaction",
         element: <Transaction />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
       },
       {
         path: "/notifications",

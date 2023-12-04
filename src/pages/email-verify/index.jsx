@@ -20,7 +20,7 @@ const EmailVerification = () => {
       const result = dispatch(confirmAdminEmail(token));
           if (result?.payload?.status === 200) {
         const { token, admin } = result.data.data;
-        dispatch(userLoggedIn({ accessToken: token, admin: admin }));
+        dispatch(userLoggedIn({ accessToken: token, loggedinUser: loggedinUser }));
         if (isSuccess && !isLoading) {
           setTimeout(() => {
             navigate("/home");

@@ -5,14 +5,22 @@ import {
   adminSignupApi,
   confirmAdminEmailApi,
   fetchAllUserApi,
+  fetchAdminUserByIdApi,
+  fetchAllProductsApi,
+  updateAdminUserByIdApi,
+  uploadAdminProfileImageApi,
+  uploadAdminProfileCoverImageApi
 } from "./apiService";
 
 const initialState = {
   accessToken: undefined,
   loggedinUser: undefined,
   usersList: [],
+  productList: [],
   isLoading: false,
   isSuccess: false,
+  isImagUploadedSuccess: false,
+  isImageloadingSuccess: false,
 };
 //POST
 export const adminLogin = createAsyncThunk(
@@ -37,6 +45,41 @@ export const adminLogin = createAsyncThunk(
     }
   }
 );
+//POST
+export const uploadAdminProfileImage = createAsyncThunk(
+  "Admin/uploadAdminProfileImage",
+  async ({ payload, id }, thunkAPI) => {
+    try {
+      const result = await uploadAdminProfileImageApi(payload, id);
+      if (result && result?.status === 200) {
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+        );
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//POST
+export const uploadAdminProfileCoverImage = createAsyncThunk(
+  "Admin/uploadAdminProfileCoverImage",
+  async ({ payload, id }, thunkAPI) => {
+    try {
+      const result = await uploadAdminProfileCoverImageApi(payload, id);
+      if (result && result?.status === 200) {
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+        );
+      }
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 export const adminSignup = createAsyncThunk(
   "Admin/Signup",
   async (Username, thunkAPI) => {
@@ -60,14 +103,65 @@ export const confirmAdminEmail = createAsyncThunk(
     }
   }
 );
+//patch
+export const updateAdminUserById = createAsyncThunk(
+  "Admin/updateAdminUserById",
+  async (values, thunkAPI) => {
+    try {
+      const result = await updateAdminUserByIdApi(values.id, values);
+      if (result?.status === 200) {
+        const { token, admin } = result?.data;
+        Cookies.set(
+          "userInfo",
+          JSON.stringify({ accessToken: token, loggedinUser: admin }),
+          { expires: 0.5 }
+        );
+        thunkAPI.dispatch(
+          userLoggedIn({ accessToken: token, loggedinUser: admin })
+        );
+        return result?.data;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+);
 //get
 export const fetchAllUser = createAsyncThunk(
-  "Admin/SignupEmailVerify",
+  "Admin/fetchAllUser",
   async (token, thunkAPI) => {
     try {
       const result = await fetchAllUserApi();
       const { data } = result.data;
       thunkAPI.dispatch(fetchAllUserDetails({ usersList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//get
+export const fetchAllProducts = createAsyncThunk(
+  "Admin/fetchAllProducts",
+  async (token, thunkAPI) => {
+    try {
+      const result = await fetchAllProductsApi();
+      const { data } = result.data;
+      thunkAPI.dispatch(fetchAllProductsDetails({ productList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//get
+export const fetchAdminUserById = createAsyncThunk(
+  "Admin/fetchAdminUserById",
+  async (id, thunkAPI) => {
+    try {
+      const result = await fetchAdminUserByIdApi(id);
+      const { token, admin } = result.data.data;
+      thunkAPI.dispatch(
+        userLoggedIn({ accessToken: token, loggedinUser: admin })
+      );
     } catch (error) {
       throw error;
     }
@@ -91,6 +185,9 @@ const authSlice = createSlice({
     fetchAllUserDetails: (state, action) => {
       state.usersList = action.payload.usersList;
     },
+    fetchAllProductsDetails: (state, action) => {
+      state.productList = action.payload.productList;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -105,12 +202,31 @@ const authSlice = createSlice({
       .addCase(confirmAdminEmail.rejected, (state) => {
         state.isLoading = false;
         state.isSuccess = false;
+      })
+      .addCase(uploadAdminProfileImage.pending, (state) => {
+        state.isImagUploadedSuccess = false;
+        state.isImageloadingSuccess = true;
+        // handle pending state if needed
+      })
+      .addCase(uploadAdminProfileImage.fulfilled, (state, action) => {
+        // handle fulfilled state
+        state.isImagUploadedSuccess = true;
+        state.isImageloadingSuccess = false;
+      })
+      .addCase(uploadAdminProfileImage.rejected, (state, action) => {
+        // handle rejected state
+        state.isImagUploadedSuccess = false;
+        state.isImageloadingSuccess = false;
       });
   },
 });
 
-export const { userLoggedIn, userLoggedOut, fetchAllUserDetails } =
-  authSlice.actions;
+export const {
+  userLoggedIn,
+  userLoggedOut,
+  fetchAllUserDetails,
+  fetchAllProductsDetails,
+} = authSlice.actions;
 
 export const selectAccessToken = (state) => state.auth.accessToken;
 export const selectUser = (state) => state.auth.loggedinUser;

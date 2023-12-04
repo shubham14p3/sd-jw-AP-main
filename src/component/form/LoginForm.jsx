@@ -49,7 +49,7 @@ function LoginForm() {
       password: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, event) => {
       try {
         const data = await dispatch(
           adminLogin({
@@ -64,6 +64,7 @@ function LoginForm() {
           }, 2000);
         } else {
           notifyError("Unable to Login. Try Again");
+          resetForm();
         }
       } catch (error) {
         notifyError("An error occurred during login. Please try again.");

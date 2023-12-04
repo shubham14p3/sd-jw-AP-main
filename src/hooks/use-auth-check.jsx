@@ -19,14 +19,11 @@ export default function useAuthCheck() {
         dispatch(
           userLoggedIn({
             accessToken: auth.accessToken,
-            user: auth.user,
+            loggedinUser: auth.loggedinUser,
           })
         );
       }
-    } else {
-      // If there is no localAuth, dispatch userLoggedOut
-      dispatch(userLoggedOut());
-    }
+    } 
     setAuthChecked(true);
   }, [dispatch, setAuthChecked]);
 

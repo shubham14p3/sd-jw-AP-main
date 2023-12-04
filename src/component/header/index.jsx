@@ -11,8 +11,10 @@ import Alarm from "./Alarm";
 import Message from "./Message";
 import Currency from "./Currency";
 import FullScreenBtn from "./FullScreenBtn";
+import { useSelector } from "react-redux";
 
 function Header({ toggleMenu, menu }) {
+  const userList = useSelector((state) => state.auth.loggedinUser);
   const [subNav, setSubNav] = useState(false);
   useEffect(() => {
     if (subNav) {
@@ -129,11 +131,21 @@ function Header({ toggleMenu, menu }) {
                             </button>
                           </div>
                         </div>
-                        <Author
-                          subNav={subNav}
-                          setSubNav={setSubNav}
-                          title="author"
-                        />
+                        <div className="crancy-currency-author-styling ">
+                          <a
+                            className="crancy-currency-author-styling-anchor"
+                            href="#"
+                          >
+                            {userList ? userList.firstName.toUpperCase() : " "}{" "}
+                            {userList ? userList.lastName.toUpperCase() : " "}{" "}
+                          </a>
+
+                          <Author
+                            subNav={subNav}
+                            setSubNav={setSubNav}
+                            title="author"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

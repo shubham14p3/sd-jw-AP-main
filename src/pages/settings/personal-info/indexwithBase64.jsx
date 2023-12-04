@@ -5,16 +5,8 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import {
-  updateAdminUserById,
-  uploadAdminProfileCoverImage,
-  uploadAdminProfileImage,
-} from "../../../redux/features/auth/authSlice";
-import { notifySuccess, notifyError } from "../../../utils/toast";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { FileUploader } from "react-drag-drop-files";
+import { updateAdminUserById } from "../../../redux/features/auth/authSlice";
+import { notifySuccess } from "../../../utils/toast";
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string().required("First Name is required"),
   // lastName: Yup.string().required("Last Name is required"),
@@ -54,21 +46,19 @@ const validationSchema = Yup.object().shape({
 });
 const PersonalInfo = () => {
   const user = useSelector((state) => state.auth.loggedinUser);
-
   const dispatch = useDispatch();
-  const [isModalOpen, setModalOpen] = useState(false);
+
   const [image, setImage] = useState("");
-  const [dataType, setDataType] = useState(null);
-  const [file, setFile] = useState(null);
+  const [imageCover, setImageCover] = useState("");
   const formik = useFormik({
     initialValues: {
       firstName: user.firstName || "",
       lastName: user.lastName || "",
+      profilePic: user.profilePic || "",
+      profileCover: user.profileCover || "",
       email: user.email || "",
       mobileNo: user.mobileNo || "9180",
       faxNo: user.faxNo || "+9180",
-      profilePic: user.profilePic || "",
-      profileCover: user.profileCover || "",
       gender: user.gender
         ? user.gender.toLowerCase() === "male" ||
           user.gender.toLowerCase() === "m"
@@ -110,42 +100,103 @@ const PersonalInfo = () => {
   const handleCancel = () => {
     formik.resetForm();
   };
-  const handleOpenModal = (pic) => {
-    setDataType(pic);
-    setModalOpen(true);
-  };
+  const profilePicToBase64 = (e) => {
+    const file = e.target.files[0];
+    // Check if a file is selected
+    if (file) {
+      // Check file type
+      const acceptedFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!acceptedFileTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+      // Check image dimensions
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        if (
+          !(
+            img.width >= 50 &&
+            img.width <= 300 &&
+            img.height >= 50 &&
+            img.height <= 300
+          )
+        ) {
+          alert("Image dimensions must be between 50x50 and 300x300 pixels.");
+          return;
+        }
+        // Check file size
+        const minSizeInBytes = 1 * 1024; // 10KB
+        const maxSizeInBytes = 500 * 1024; // 500KB
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
-
-  const uploadImage = async () => {
-    const formData = new FormData();
-    formData.append("image", file[0]);
-    let response;
-
-    if (dataType == "pic") {
-      response = await dispatch(
-        uploadAdminProfileImage({ payload: formData, id: formik.values.id })
-      );
-    } else if (dataType == "cover") {
-      response = await dispatch(
-        uploadAdminProfileCoverImage({
-          payload: formData,
-          id: formik.values.id,
-        })
-      );
+        if (file.size < minSizeInBytes || file.size > maxSizeInBytes) {
+          alert("File size should be between 10KB and 500KB.");
+          return;
+        }
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImage(reader.result);
+          formik.setFieldValue("profilePic", reader.result);
+        };
+        reader.onerror = () => {
+          console.error("Error reading file.");
+        };
+      };
     }
-    if (response?.payload?.data) {
-      // Show success alert
-      notifySuccess("Profile Updated successful");
-      setModalOpen(false);
-    } else {
-      // Show reject alert
-      notifyError("Try Again uploading the image");
+  };
+  const profileCoverToBase64 = (e) => {
+    const file = e.target.files[0];
+    // Check if a file is selected
+    if (file) {
+      // Check file type
+      const acceptedFileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!acceptedFileTypes.includes(file.type)) {
+        alert("Please upload a valid image file (JPEG, PNG, GIF).");
+        return;
+      }
+
+      // Check image dimensions
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+      img.onload = () => {
+        const minWidth = 1018;
+        const minHeight = 155;
+
+        if (img.width < minWidth || img.height < minHeight) {
+          alert("Image dimensions should be at least 1170x920 pixels.");
+          return;
+        }
+
+        // Check file size
+        const minSizeInBytes = 1 * 1024; // 10KB
+        const maxSizeInBytes = 1 * 1024 * 1024; // 1mb
+        if (file.size < minSizeInBytes || file.size > maxSizeInBytes) {
+          alert("File size should be between 10KB and 500KB.");
+          return;
+        }
+
+        // Convert to base64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          setImageCover(reader.result);
+          formik.setFieldValue("profileCover", reader.result);
+        };
+        reader.onerror = () => {
+          console.error("Error reading file.");
+        };
+      };
     }
   };
 
+  useEffect(() => {
+    setImage(formik.values.profilePic);
+  }, [formik.values.profilePic]);
+  useEffect(() => {
+    setImageCover(formik.values.profileCover);
+  }, [formik.values.profileCover]);
   return (
     <div className="tab-pane fade show active">
       <form onSubmit={formik.handleSubmit}>
@@ -339,10 +390,9 @@ const PersonalInfo = () => {
                       <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
                         <img
                           src={
-                            formik.values.profilePic &&
-                            formik.values.profilePic !== ""
-                              ? formik.values.profilePic
-                              : imgProfile
+                            formik.values.profilePic == ""
+                              ? imgProfile
+                              : `${image}`
                           }
                           alt="Profile Pic"
                           style={{
@@ -354,7 +404,6 @@ const PersonalInfo = () => {
                         <label
                           className="crancy-ptabs__sedit"
                           htmlFor="file-input"
-                          onClick={() => handleOpenModal("pic")}
                         >
                           <span>
                             <svg
@@ -373,11 +422,16 @@ const PersonalInfo = () => {
                             </svg>
                           </span>
                         </label>
-                        {/* <input id="file-input" type="file" accept="image/*" /> */}
+                        <input
+                          id="file-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={profilePicToBase64}
+                        />
                       </div>
                     </div>
                   </div>
-                  <div className="crancy-ptabs__ssingle crancy-ptabs__srofile">
+                  <div className="crancy-ptabs__ssingle crancy-ptabs__scover">
                     <div className="crancy-ptabs__sheading">
                       <h4 className="crancy-ptabs__stitle crancy-ptabs__stitle--update">
                         Update Cover{" "}
@@ -388,45 +442,49 @@ const PersonalInfo = () => {
                       </p>
                       <p className="crancy-ptabs__stext">Not More then 1 Mb</p>
                     </div>
-                    <div className="crancy-ptabs__sauthor">
-                      <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
-                        <img
-                          src={
-                            formik.values.profileCover &&
-                            formik.values.profileCover !== ""
-                              ? formik.values.profileCover
-                              : coverImg
-                          }
-                          alt="Profile Cover Pic"
-                          style={{
-                            width: "230px",
-                            height: "146px",
-                            objectFit: "scale-down",
-                          }}
-                        />
-                        <label
-                          className="crancy-ptabs__sedit"
-                          htmlFor="file-input"
-                          onClick={() => handleOpenModal("cover")}
-                        >
-                          <span>
-                            <svg
-                              viewBox="0 0 32 32"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M16.5147 11.5C17.7284 12.7137 18.9234 13.9087 20.1296 15.115C19.9798 15.2611 19.8187 15.4109 19.6651 15.5683C17.4699 17.7635 15.271 19.9587 13.0758 22.1539C12.9334 22.2962 12.7948 22.4386 12.6524 22.5735C12.6187 22.6034 12.5663 22.6296 12.5213 22.6296C11.3788 22.6334 10.2362 22.6297 9.09365 22.6334C9.01498 22.6334 9 22.6034 9 22.536C9 21.4009 9 20.2621 9.00375 19.1271C9.00375 19.0746 9.02997 19.0109 9.06368 18.9772C10.4123 17.6249 11.7609 16.2763 13.1095 14.9277C14.2295 13.8076 15.3459 12.6913 16.466 11.5712C16.4884 11.5487 16.4997 11.5187 16.5147 11.5Z"
-                                fill="white"
-                              ></path>
-                              <path
-                                d="M20.9499 14.2904C19.7436 13.0842 18.5449 11.8854 17.3499 10.6904C17.5634 10.4694 17.7844 10.2446 18.0054 10.0199C18.2639 9.76139 18.5261 9.50291 18.7884 9.24443C19.118 8.91852 19.5713 8.91852 19.8972 9.24443C20.7251 10.0611 21.5492 10.8815 22.3771 11.6981C22.6993 12.0165 22.7105 12.4698 22.3996 12.792C21.9238 13.2865 21.4443 13.7772 20.9686 14.2717C20.9648 14.2792 20.9536 14.2867 20.9499 14.2904Z"
-                                fill="white"
-                              ></path>
-                            </svg>
-                          </span>
-                        </label>
-                      </div>
+                    <div className="crancy-ptabs__sauthor-img crancy-ptabs__pthumb">
+                      <img
+                        src={
+                          formik.values.profileCover == ""
+                            ? coverImg
+                            : `${imageCover}`
+                        }
+                        alt="Profile Cover Pic"
+                        style={{
+                          width: "230px",
+                          height: "146px",
+                          objectFit: "scale-down",
+                        }}
+                      />
+                      <label
+                        className="crancy-ptabs__sedit"
+                        htmlFor="profile-cover-input"
+                      >
+                        <span>
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M16.5147 11.5C17.7284 12.7137 18.9234 13.9087 20.1296 15.115C19.9798 15.2611 19.8187 15.4109 19.6651 15.5683C17.4699 17.7635 15.271 19.9587 13.0758 22.1539C12.9334 22.2962 12.7948 22.4386 12.6524 22.5735C12.6187 22.6034 12.5663 22.6296 12.5213 22.6296C11.3788 22.6334 10.2362 22.6297 9.09365 22.6334C9.01498 22.6334 9 22.6034 9 22.536C9 21.4009 9 20.2621 9.00375 19.1271C9.00375 19.0746 9.02997 19.0109 9.06368 18.9772C10.4123 17.6249 11.7609 16.2763 13.1095 14.9277C14.2295 13.8076 15.3459 12.6913 16.466 11.5712C16.4884 11.5487 16.4997 11.5187 16.5147 11.5Z"
+                              fill="white"
+                            ></path>
+                            <path
+                              d="M20.9499 14.2904C19.7436 13.0842 18.5449 11.8854 17.3499 10.6904C17.5634 10.4694 17.7844 10.2446 18.0054 10.0199C18.2639 9.76139 18.5261 9.50291 18.7884 9.24443C19.118 8.91852 19.5713 8.91852 19.8972 9.24443C20.7251 10.0611 21.5492 10.8815 22.3771 11.6981C22.6993 12.0165 22.7105 12.4698 22.3996 12.792C21.9238 13.2865 21.4443 13.7772 20.9686 14.2717C20.9648 14.2792 20.9536 14.2867 20.9499 14.2904Z"
+                              fill="white"
+                            ></path>
+                          </svg>
+                        </span>
+                      </label>
+                      <input
+                        id="profile-cover-input"
+                        type="file"
+                        accept="image/*"
+                        onChange={profileCoverToBase64}
+                      />
                     </div>
                   </div>
                 </div>
@@ -621,62 +679,7 @@ const PersonalInfo = () => {
           </button>
         </div>
       </form>
-      <UploadPicModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        setFile={setFile}
-        uploadImage={uploadImage}
-        file={file}
-      />
     </div>
-  );
-};
-
-const UploadPicModal = ({ isOpen, onClose, setFile, file, uploadImage }) => {
-  const handleChange = (file) => {
-    setFile(file);
-  };
-  const fileTypes = ["JPEG", "PNG", "GIF"];
-  return (
-    <Modal
-      open={isOpen}
-      onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Box
-        sx={{
-          position: "absolute",
-          width: 500,
-          bgcolor: "background.paper",
-          border: "2px solid #000",
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <FileUploader
-          multiple={true}
-          handleChange={handleChange}
-          name="file"
-          types={fileTypes}
-        />
-        <br />
-        <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
-        <br />
-        <Button
-          disabled={file == "" || file == null || file == undefined}
-          onClick={uploadImage}
-        >
-          Confirm Submit
-        </Button>
-        <Button onClick={onClose}>Close Modal</Button>
-      </Box>
-    </Modal>
   );
 };
 

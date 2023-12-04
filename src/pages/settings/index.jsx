@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../component/home-two/Layout";
 import BreadCrumb from "../../component/home-two/BreadCrumb";
 import Wrapper from "../../component/settings/Wrapper";
 import Sidebar from "../../component/settings/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import useMenu from "../../hooks/useMenu";
-
-function Settings({ children }) {
+import { useDispatch, useSelector } from "react-redux";
+import { userLoggedIn } from "../../redux/features/auth/authSlice";
+import Cookies from "js-cookie";
+const Settings = ({ children }) => {
   useMenu();
+  const user = useSelector((state) => state.auth.loggedinUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const localAuth = Cookies.get("userInfo");
+    if (localAuth) {
+      const auth = JSON.parse(localAuth);
+      if (auth?.accessToken && auth?.loggedinUser) {
+        dispatch(
+          userLoggedIn({
+            accessToken: auth.accessToken,
+            loggedinUser: auth.loggedinUser,
+          })
+        );
+      }
+    }
+  }, [dispatch]);
   return (
     <Layout>
       <BreadCrumb title="Settings" link="/settings" />
@@ -21,6 +40,6 @@ function Settings({ children }) {
       </Wrapper>
     </Layout>
   );
-}
+};
 
 export default Settings;

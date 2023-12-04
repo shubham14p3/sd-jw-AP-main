@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 // import logo from "../../assets/img/logo-dark.png";
 import logoWhite from "../../assets/img/logo-white.png";
 import logo from "../../assets/img/logo.png";
@@ -10,12 +10,21 @@ import inboxAuthor from "../../assets/img/inbox-author.png";
 import signInIcon from "../../assets/img/support-sign-icon.svg";
 import Dropdown from "./Dropdown";
 import bg from "../../assets/img/support-bg.png";
+import { useDispatch } from "react-redux";
+import { userLoggedOut } from "../../redux/features/auth/authSlice";
 
-function Menu({ toggleMenu, menu }) {
+const Menu=({ toggleMenu, menu })=> {
   const [dropdown, setDropdown] = useState(false);
   const location = useLocation();
+  const dispatch = useDispatch(); 
+  const navigate = useNavigate();
   const handleDropdown = (name) => {
     setDropdown(name === dropdown ? "" : name);
+  };
+  
+  const handleLogout = () => {
+    dispatch(userLoggedOut());
+    navigate("/");
   };
   return (
     <div className={`crancy-smenu ${menu && "crancy-close"}`} id="CrancyMenu">
@@ -219,6 +228,7 @@ function Menu({ toggleMenu, menu }) {
                   { link: "error-page", title: "Error Page" },
                 ]}
               />
+              {/* Author Pages */}
               <Dropdown
                 name="Author Pages"
                 dropdown={dropdown}
@@ -244,6 +254,33 @@ function Menu({ toggleMenu, menu }) {
                   { link: "password-success", title: "Success" },
                 ]}
               />
+              {/* products */}
+              <li
+                className={location.pathname === "/products" ? "active" : ""}
+              >
+                <Link className="collapsed" to="/products">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="20"
+                        height="22"
+                        viewBox="0 0 20 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 9H14M6 13H14M6 17H10M6 3C6 4.10457 6.89543 5 8 5H12C13.1046 5 14 4.10457 14 3M6 3C6 1.89543 6.89543 1 8 1H12C13.1046 1 14 1.89543 14 3M6 3H5C2.79086 3 1 4.79086 1 7V17C1 19.2091 2.79086 21 5 21H15C17.2091 21 19 19.2091 19 17V7C19 4.79086 17.2091 3 15 3H14"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Products</span>
+                  </span>
+                </Link>
+              </li>
+              {/* transaction */}
               <li
                 className={location.pathname === "/transaction" ? "active" : ""}
               >
@@ -269,6 +306,7 @@ function Menu({ toggleMenu, menu }) {
                   </span>
                 </Link>
               </li>
+              {/* notifications */}
               <li
                 className={
                   location.pathname === "/notifications" ? "active" : ""
@@ -518,7 +556,7 @@ function Menu({ toggleMenu, menu }) {
                 </Link>
               </li>
               <li>
-                <Link to="#!" className="collapsed">
+                <Link to="#!" className="collapsed" onClick={handleLogout}>
                   <span className="menu-bar__text">
                     <span className="crancy-menu-icon crancy-svg-icon__v1">
                       <svg

@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { adminSignup } from "../../redux/features/auth/authSlice";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("First name is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("First name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
@@ -32,7 +33,8 @@ function SignUpForm() {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       checkbox: false,
@@ -42,9 +44,10 @@ function SignUpForm() {
       try {
         const data = await dispatch(
           adminSignup({
-            name: formik.values.name,
-            email: formik.values.email,
-            password: formik.values.password,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            password: values.password,
             role: "Super Admin",
           })
         );
@@ -57,7 +60,7 @@ function SignUpForm() {
           }, 2000);
         }
       } catch (error) {
-        console.log(error);
+        console.error("Error in onSubmit:", error);
       }
     },
   });
@@ -77,9 +80,29 @@ function SignUpForm() {
               <input
                 className="crancy-wc__form-input"
                 type="name"
-                name="name"
-                id="name"
-                placeholder="Name"
+                name="firstName"
+                id="firstName"
+                placeholder="First Name"
+                required="required"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
+              />
+            </div>
+            {formik.touched.name && formik.errors.name ? (
+              <ErrorMsg msg={formik.errors.name} />
+            ) : null}
+          </div>
+        </div>
+        <div className="row">
+          <div className="form-group">
+            <div className="form-group__input">
+              <input
+                className="crancy-wc__form-input"
+                type="name"
+                name="lastName"
+                id="lastName"
+                placeholder="Last Name"
                 required="required"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}

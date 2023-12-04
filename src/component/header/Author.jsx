@@ -1,8 +1,16 @@
 import React from "react";
 import profile from "../../assets/img/profile-pic.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { userLoggedOut } from "../../redux/features/auth/authSlice";
 
-function Author({ subNav, setSubNav, title }) {
+const Author = ({ subNav, setSubNav, title }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(userLoggedOut());
+    navigate("/");
+  };
   return (
     <div className="crancy-header__author" onMouseOver={() => setSubNav(title)}>
       <Link to="/profile-overview">
@@ -145,7 +153,9 @@ function Author({ subNav, setSubNav, title }) {
                 </svg>
               </div>
               <h4 className="crancy-balance-name">
-                <a href="#">Log Out</a>
+                <a href="#!" onClick={handleLogout}>
+                  Log Out
+                </a>
               </h4>
             </div>
           </li>
@@ -154,6 +164,6 @@ function Author({ subNav, setSubNav, title }) {
       {/* <!-- End crancy Balance Hover --> */}
     </div>
   );
-}
+};
 
 export default Author;
