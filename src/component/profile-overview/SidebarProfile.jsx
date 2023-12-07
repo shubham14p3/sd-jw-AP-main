@@ -7,17 +7,34 @@ import socialImg4 from "../../assets/img/social-4.png";
 import socialImg5 from "../../assets/img/social-5.png";
 
 const SidebarProfile = (props) => {
-  const {name, email ,role, status} = props.user;
+  const {
+    name,
+    email,
+    role,
+    status,
+    profilePic,
+    mobileNoAreaCode,
+    mobileNo,
+    faxNo,
+    gender,
+    createdAt,
+    twitter,
+    instagram,
+    updatedAt,
+    facebook,
+    youtube,
+    linkedin,
+  } = props.user;
 
   return (
     <div className="col-lg-4  col-12 crancy-upinner__column1">
       {/* <!-- Profile Card --> */}
       <div className="crancy-upcard mg-top-30">
         <div className="crancy-upcard__thumb">
-          <img src={profileImg} alt="#" />
+          <img src={profilePic ? profilePic : profileImg} alt="#" />
         </div>
         <div className="crancy-upcard__heading">
-          <h3 className="crancy-upcard__title">{name?name:null}</h3>
+          <h3 className="crancy-upcard__title">{name ? name : null}</h3>
           <div className="crancy-upcard__location">
             <svg
               width="14"
@@ -35,53 +52,62 @@ const SidebarProfile = (props) => {
         </div>
         <ul className="crancy-upcard__list">
           <li>
-            <b>Mobile :</b> <span>+232 4334 2343</span>
+            <b>Mobile :</b>{" "}
+            <span>
+              {mobileNoAreaCode} {mobileNo}
+            </span>
           </li>
           <li>
-            <b>Email :</b> <span>{email?email:null}</span>
+            <b>Email :</b> <span>{email ? email : null}</span>
           </li>
           <li>
-            <b>Fax :</b> <span>+34345354</span>
+            <b>Fax :</b> <span>{faxNo}</span>
           </li>
           <li>
-            <b>Gender :</b> <span>Male</span>
+            <b>Gender :</b> <span>{gender}</span>
           </li>
           <li>
-            <b>Role :</b> <span>{role?role:null}</span>
+            <b>Role :</b> <span>{role ? role : null}</span>
           </li>
           <li>
-            <b>Account Status :</b> <span>{status?status:null}</span>
+            <b>Account Status :</b> <span>{status ? status : null}</span>
           </li>
           <li>
             <b>Joining Date :</b>{" "}
             <span className="crancy-pcolor crancy-upcard__list--label">
-              March 23,1995
+              {createdAt}
+            </span>
+          </li>
+          <li>
+            <b>Last Modified :</b>{" "}
+            <span className="crancy-pcolor crancy-upcard__list--label">
+              {updatedAt}
             </span>
           </li>
         </ul>
         <ul className="crancy-upcard__social">
           <li>
-            <a href="#">
+            <a href={linkedin}>
               <img src={socialImg} />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href={facebook}>
               <img src={socialImg2} />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href={youtube}>
               <img src={socialImg3} />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href={twitter}>
               <img src={socialImg4} />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href={instagram}>
               <img src={socialImg5} />
             </a>
           </li>
@@ -90,6 +116,6 @@ const SidebarProfile = (props) => {
       {/* <!-- End Profile Card --> */}
     </div>
   );
-}
+};
 
 export default SidebarProfile;

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLoggedOut } from "../../redux/features/auth/authSlice";
 
-const Author = ({ subNav, setSubNav, title }) => {
+const Author = ({ subNav, setSubNav, title, userList }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -15,7 +15,12 @@ const Author = ({ subNav, setSubNav, title }) => {
     <div className="crancy-header__author" onMouseOver={() => setSubNav(title)}>
       <Link to="/profile-overview">
         <div className="crancy-header__author-img">
-          <img src={profile} alt="#" />
+          <img
+            src={
+              userList && userList.profilePic ? userList.profilePic : profile
+            }
+            alt=""
+          />
         </div>
       </Link>
       {/* <!-- crancy Profile Hover --> */}

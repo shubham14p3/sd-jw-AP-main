@@ -9,7 +9,7 @@ import {
   fetchAllProductsApi,
   updateAdminUserByIdApi,
   uploadAdminProfileImageApi,
-  uploadAdminProfileCoverImageApi
+  uploadAdminProfileCoverImageApi,
 } from "./apiService";
 
 const initialState = {
@@ -35,7 +35,7 @@ export const adminLogin = createAsyncThunk(
         JSON.stringify({ accessToken: token, loggedinUser: admin }),
         { expires: 0.5 }
       );
-
+      localStorage.setItem("UID", JSON.stringify(admin._id));
       thunkAPI.dispatch(
         userLoggedIn({ accessToken: token, loggedinUser: admin })
       );
@@ -53,7 +53,10 @@ export const uploadAdminProfileImage = createAsyncThunk(
       const result = await uploadAdminProfileImageApi(payload, id);
       if (result && result?.status === 200) {
         thunkAPI.dispatch(
-          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+          userLoggedIn({
+            accessToken: result.data.token,
+            loggedinUser: result.data.data,
+          })
         );
       }
       return result;
@@ -70,7 +73,10 @@ export const uploadAdminProfileCoverImage = createAsyncThunk(
       const result = await uploadAdminProfileCoverImageApi(payload, id);
       if (result && result?.status === 200) {
         thunkAPI.dispatch(
-          userLoggedIn({ accessToken: result.data.token, loggedinUser: result.data.data })
+          userLoggedIn({
+            accessToken: result.data.token,
+            loggedinUser: result.data.data,
+          })
         );
       }
       return result;
@@ -158,7 +164,7 @@ export const fetchAdminUserById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const result = await fetchAdminUserByIdApi(id);
-      const { token, admin } = result.data.data;
+      const { token, admin } = result.data;
       thunkAPI.dispatch(
         userLoggedIn({ accessToken: token, loggedinUser: admin })
       );
@@ -180,7 +186,11 @@ const authSlice = createSlice({
     userLoggedOut: (state) => {
       state.accessToken = undefined;
       state.loggedinUser = undefined;
-      Cookies.remove("userInfo");
+      const cookies = Cookies.get();
+      for (const cookie in cookies) {
+        Cookies.remove(cookie);
+      }
+      localStorage.clear();
     },
     fetchAllUserDetails: (state, action) => {
       state.usersList = action.payload.usersList;

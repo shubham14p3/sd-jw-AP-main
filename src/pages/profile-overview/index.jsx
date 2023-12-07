@@ -32,7 +32,7 @@ function ProfileOverview({ children }) {
     <Layout>
       <BreadCrumb title="Profile Overview" link="profile-overview" />
       <Wrapper>
-        <ProfileHeader />
+        <ProfileHeader  user={user}/>
         <div className="crancy-upinner">
           <div className="row">
             <SidebarProfile user={user} />

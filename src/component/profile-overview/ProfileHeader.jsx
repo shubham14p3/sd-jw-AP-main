@@ -2,15 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import bg from "../../assets/img/profile-cover.png";
 
-function ProfileHeader() {
+function ProfileHeader({ profileCover }) {
   return (
     <div className="crancy-userprofile__header mg-top-30">
-      <img src={bg} alt="#" />
+      <img src={profileCover ? profileCover : bg} alt="#" />
       <div className="crancy-userprofile__right">
-        <Link to="#" className="crancy-btn crancy-ybcolor crancy-btn__profile">
+        <Link
+          to="/settings"
+          className="crancy-btn crancy-ybcolor crancy-btn__profile"
+        >
           Edit Profile
         </Link>
-        <Link to="#" className="crancy-btn crancy-btn__share">
+        <Link to="/#" className="crancy-btn crancy-btn__share">
           <svg
             width="23"
             height="22"

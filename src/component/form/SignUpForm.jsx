@@ -49,6 +49,16 @@ function SignUpForm() {
             email: values.email,
             password: values.password,
             role: "Super Admin",
+            mobileNo: "",
+            faxNo: "",
+            gender: "",
+            country: "",
+            facebook: "",
+            youtube: "",
+            twitter: "",
+            pinterest: "",
+            linkedin: "",
+            instagram: "",
           })
         );
         if (data?.payload?.status !== 200) {

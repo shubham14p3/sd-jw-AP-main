@@ -53,6 +53,210 @@ const Menu=({ toggleMenu, menu })=> {
           </div>
         </div>
 
+        <div className="admin-menu__one crancy-sidebar-padding mg-top-20">
+          {/* <h4 className="admin-menu__title">Menu</h4>  */}
+          {/* <!-- Nav Menu --> */}
+          <div className="menu-bar">
+            <ul id="CrancyMenu" className="menu-bar__one crancy-dashboard-menu">
+              
+             {/* inbox */}
+              <li className={location.pathname === "/inbox" ? "active" : ""}>
+                <Link className="collapsed" to="/inbox">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8 14H16M8 10H12M21.9664 11.2166C21.9886 11.4748 22 11.7361 22 12C22 16.9706 17.9706 21 13 21H6C3.79086 21 2 19.2091 2 17V12C2 7.02944 6.02944 3 11 3H13C13.2639 3 13.5252 3.01136 13.7834 3.03362M22 6C22 7.65685 20.6569 9 19 9C17.3431 9 16 7.65685 16 6C16 4.34315 17.3431 3 19 3C20.6569 3 22 4.34315 22 6Z"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Inbox</span>
+                  </span>
+                  <div className="crancy-menu-group">
+                    <span href="#">
+                      <img src={inboxEdit} />
+                    </span>
+                    <span href="#">
+                      <img src={inboxAuthor} />
+                    </span>
+                    <span className="menu-bar__count  crancy-color1__bg">
+                      5
+                    </span>
+                  </div>
+                </Link>
+              </li>
+               {/* notifications */}
+               <li
+                className={
+                  location.pathname === "/notifications" ? "active" : ""
+                }
+              >
+                <Link className="collapsed" to="/notifications">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11.0717 4.06949C8.26334 4.49348 6.01734 6.81294 5.67964 9.79403L5.33476 12.8385C5.24906 13.595 4.94246 14.3069 4.45549 14.88C3.42209 16.0964 4.26081 18 5.83014 18H18.1699C19.7392 18 20.5779 16.0964 19.5445 14.88C19.0575 14.3069 18.7509 13.595 18.6652 12.8385L18.4373 10.8267M15 20C14.5633 21.1652 13.385 22 12 22C10.615 22 9.43668 21.1652 9 20M20 5C20 6.65685 18.6569 8 17 8C15.3431 8 14 6.65685 14 5C14 3.34315 15.3431 2 17 2C18.6569 2 20 3.34315 20 5Z"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Notifications</span>
+                  </span>
+                  <span className="menu-bar__count  crancy-color1__bg">7</span>
+                </Link>
+              </li>
+              {/* products */}
+              <li
+                className={location.pathname === "/products" ? "active" : ""}
+              >
+                <Link className="collapsed" to="/products">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="20"
+                        height="22"
+                        viewBox="0 0 20 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 9H14M6 13H14M6 17H10M6 3C6 4.10457 6.89543 5 8 5H12C13.1046 5 14 4.10457 14 3M6 3C6 1.89543 6.89543 1 8 1H12C13.1046 1 14 1.89543 14 3M6 3H5C2.79086 3 1 4.79086 1 7V17C1 19.2091 2.79086 21 5 21H15C17.2091 21 19 19.2091 19 17V7C19 4.79086 17.2091 3 15 3H14"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Products</span>
+                  </span>
+                </Link>
+              </li>
+             
+             
+              <li className={location.pathname === "/user" ? "active" : ""}>
+                <Link className="collapsed" to="/user">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="18"
+                        height="22"
+                        viewBox="0 0 18 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <ellipse
+                          cx="8.77778"
+                          cy="17.1111"
+                          rx="7.77778"
+                          ry="3.88889"
+                          strokeWidth="1.5"
+                          strokeLinejoin="round"
+                        />
+                        <circle
+                          cx="8.77843"
+                          cy="5.44444"
+                          r="4.44444"
+                          strokeWidth="1.5"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">User</span>
+                  </span>
+                </Link>
+              </li>
+              <li className={location.pathname === "/history" ? "active" : ""}>
+                <Link className="collapsed" to="/history">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M20.5 13.5C20.5 18.1944 16.6944 22 12 22C7.30558 22 3.5 18.1944 3.5 13.5C3.5 8.80558 7.30558 5 12 5C16.6944 5 20.5 8.80558 20.5 13.5Z"
+                          strokeWidth="1.5"
+                        />
+                        <path
+                          d="M15 2.41406C14.0463 2.14433 13.04 2 12 2C10.96 2 9.95366 2.14433 9 2.41406"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M13.5 14C13.5 14.8284 12.8284 15.5 12 15.5C11.1716 15.5 10.5 14.8284 10.5 14C10.5 13.1716 11.1716 12.5 12 12.5C12.8284 12.5 13.5 13.1716 13.5 14Z"
+                          strokeWidth="1.5"
+                        />
+                        <path
+                          d="M12 12V9"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">History</span>
+                  </span>
+                </Link>
+              </li>
+               {/* transaction */}
+               <li
+                className={location.pathname === "/transaction" ? "active" : ""}
+              >
+                <Link className="collapsed" to="/transaction">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="20"
+                        height="22"
+                        viewBox="0 0 20 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 9H14M6 13H14M6 17H10M6 3C6 4.10457 6.89543 5 8 5H12C13.1046 5 14 4.10457 14 3M6 3C6 1.89543 6.89543 1 8 1H12C13.1046 1 14 1.89543 14 3M6 3H5C2.79086 3 1 4.79086 1 7V17C1 19.2091 2.79086 21 5 21H15C17.2091 21 19 19.2091 19 17V7C19 4.79086 17.2091 3 15 3H14"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Transaction</span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+          {/* <!-- End Nav Menu --> */}
+        </div>
+
+
+
+
+        {/* //modifuyng above */}
+
         {/* <!-- Main Menu --> */}
         <div className="admin-menu__one crancy-sidebar-padding mg-top-20">
           <h4 className="admin-menu__title">Menu</h4>
@@ -607,7 +811,7 @@ const Menu=({ toggleMenu, menu })=> {
             </Link>
           </div>
           {/* <!-- End Support Card --> */}
-        </div>
+        </div>*/}
       </div>
     </div>
   );
