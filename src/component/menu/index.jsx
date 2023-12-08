@@ -59,6 +59,41 @@ const Menu=({ toggleMenu, menu })=> {
           <div className="menu-bar">
             <ul id="CrancyMenu" className="menu-bar__one crancy-dashboard-menu">
               
+             {/* mail */}
+              <li className={location.pathname === "/email" ? "active" : ""}>
+                <Link className="collapsed" to="/email">
+                  <span className="menu-bar__text">
+                    <span className="crancy-menu-icon crancy-svg-icon__v1">
+                      <svg
+                        className="crancy-svg-icon"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M8 14H16M8 10H12M21.9664 11.2166C21.9886 11.4748 22 11.7361 22 12C22 16.9706 17.9706 21 13 21H6C3.79086 21 2 19.2091 2 17V12C2 7.02944 6.02944 3 11 3H13C13.2639 3 13.5252 3.01136 13.7834 3.03362M22 6C22 7.65685 20.6569 9 19 9C17.3431 9 16 7.65685 16 6C16 4.34315 17.3431 3 19 3C20.6569 3 22 4.34315 22 6Z"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span className="menu-bar__name">Email</span>
+                  </span>
+                  {/* <div className="crancy-menu-group">
+                    <span href="#">
+                      <img src={inboxEdit} />
+                    </span>
+                    <span href="#">
+                      <img src={inboxAuthor} />
+                    </span>
+                    <span className="menu-bar__count  crancy-color1__bg">
+                      5
+                    </span>
+                  </div> */}
+                </Link>
+              </li>
              {/* inbox */}
               <li className={location.pathname === "/inbox" ? "active" : ""}>
                 <Link className="collapsed" to="/inbox">
