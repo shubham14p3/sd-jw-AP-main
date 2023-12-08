@@ -10,6 +10,7 @@ import {
   updateAdminUserByIdApi,
   uploadAdminProfileImageApi,
   uploadAdminProfileCoverImageApi,
+  fetchAllUserEmailApi,
 } from "./apiService";
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   loggedinUser: undefined,
   usersList: [],
   productList: [],
+  userEmail: [],
   isLoading: false,
   isSuccess: false,
   isImagUploadedSuccess: false,
@@ -174,6 +176,29 @@ export const fetchAdminUserById = createAsyncThunk(
   }
 );
 
+//get
+export const fetchAllUserEmail = createAsyncThunk(
+  "auth/fetchAllUserEmail",
+  async (token, thunkAPI) => {
+    try {
+      const result = await fetchAllUserEmailApi();
+      if (result?.status === 200) {
+        thunkAPI.dispatch(fetchUserEmailSuccess({ userEmail: result.data }));
+        return result?.data;
+      } else {
+        // If the status is not 200, treat it as an error
+        const error = new Error(
+          result?.message || "Failed to fetch user email"
+        );
+        throw error;
+      }
+    } catch (error) {
+      // Handle any other errors here
+      throw error;
+    }
+  }
+);
+
 //slice
 const authSlice = createSlice({
   name: "auth",
@@ -197,6 +222,9 @@ const authSlice = createSlice({
     },
     fetchAllProductsDetails: (state, action) => {
       state.productList = action.payload.productList;
+    },
+    fetchUserEmailSuccess: (state, action) => {
+      state.userEmail = action.payload.userEmail;
     },
   },
   extraReducers: (builder) => {
@@ -227,6 +255,12 @@ const authSlice = createSlice({
         // handle rejected state
         state.isImagUploadedSuccess = false;
         state.isImageloadingSuccess = false;
+      })
+      .addCase(fetchAllUserEmail.fulfilled, (state) => {})
+      .addCase(fetchAllUserEmail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.error = action.error.message; // Log the error message
       });
   },
 });
@@ -236,6 +270,7 @@ export const {
   userLoggedOut,
   fetchAllUserDetails,
   fetchAllProductsDetails,
+  fetchUserEmailSuccess
 } = authSlice.actions;
 
 export const selectAccessToken = (state) => state.auth.accessToken;

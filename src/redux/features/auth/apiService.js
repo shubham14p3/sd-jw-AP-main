@@ -20,6 +20,10 @@ export const updateAdminUserByIdApi = async (id, data) =>
 export const fetchAllProductsApi = async () =>
   apiService.getData(`${NEXT_PUBLIC_API_BASE_URL}/product/all`);
 
+// fetchAllUserEmailApi
+export const fetchAllUserEmailApi = async () =>
+  apiService.getData(`${NEXT_PUBLIC_API_BASE_URL}/email/email-details`);
+
 export const uploadAdminProfileImageApi = async (payload, id) =>
   apiService.postDataImg(
     `${NEXT_PUBLIC_API_BASE_URL}/cloudinary/add-admin-profile-img/${id}`,
