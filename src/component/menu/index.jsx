@@ -11,7 +11,7 @@ import signInIcon from "../../assets/img/support-sign-icon.svg";
 import Dropdown from "./Dropdown";
 import bg from "../../assets/img/support-bg.png";
 import { useDispatch } from "react-redux";
-import { userLoggedOut } from "../../redux/features/auth/authSlice";
+import { userLoggedOut } from "../../redux/features/authReducers";
 
 const Menu=({ toggleMenu, menu })=> {
   const [dropdown, setDropdown] = useState(false);
@@ -94,71 +94,47 @@ const Menu=({ toggleMenu, menu })=> {
                   </div> */}
                 </Link>
               </li>
-             {/* inbox */}
-              <li className={location.pathname === "/inbox" ? "active" : ""}>
-                <Link className="collapsed" to="/inbox">
-                  <span className="menu-bar__text">
-                    <span className="crancy-menu-icon crancy-svg-icon__v1">
-                      <svg
-                        className="crancy-svg-icon"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M8 14H16M8 10H12M21.9664 11.2166C21.9886 11.4748 22 11.7361 22 12C22 16.9706 17.9706 21 13 21H6C3.79086 21 2 19.2091 2 17V12C2 7.02944 6.02944 3 11 3H13C13.2639 3 13.5252 3.01136 13.7834 3.03362M22 6C22 7.65685 20.6569 9 19 9C17.3431 9 16 7.65685 16 6C16 4.34315 17.3431 3 19 3C20.6569 3 22 4.34315 22 6Z"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span className="menu-bar__name">Inbox</span>
-                  </span>
-                  <div className="crancy-menu-group">
-                    <span href="#">
-                      <img src={inboxEdit} />
-                    </span>
-                    <span href="#">
-                      <img src={inboxAuthor} />
-                    </span>
-                    <span className="menu-bar__count  crancy-color1__bg">
-                      5
-                    </span>
-                  </div>
-                </Link>
-              </li>
-               {/* notifications */}
-               <li
-                className={
-                  location.pathname === "/notifications" ? "active" : ""
+           
+              {/* products  dropdown*/}
+              <Dropdown
+                name="Products"
+                dropdown={dropdown}
+                setDropdown={handleDropdown}
+                options={[
+                  { link: 'products', title: "View Products" },
+                  { link: "product-add", title: "Add Single Products" },
+                  { link: "home-analytics", title: "Add Multiple Products" },
+                ]}
+                img={
+                  <svg
+                    className="crancy-svg-icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 4C2 2.89543 2.89543 2 4 2H8C9.10457 2 10 2.89543 10 4V8C10 9.10457 9.10457 10 8 10H4C2.89543 10 2 9.10457 2 8V4Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M22 6C22 8.20914 20.2091 10 18 10C15.7909 10 14 8.20914 14 6C14 3.79086 15.7909 2 18 2C20.2091 2 22 3.79086 22 6Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M10 18C10 20.2091 8.20914 22 6 22C3.79086 22 2 20.2091 2 18C2 15.7909 3.79086 14 6 14C8.20914 14 10 15.7909 10 18Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M14 16C14 14.8954 14.8954 14 16 14H20C21.1046 14 22 14.8954 22 16V20C22 21.1046 21.1046 22 20 22H16C14.8954 22 14 21.1046 14 20V16Z"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
                 }
-              >
-                <Link className="collapsed" to="/notifications">
-                  <span className="menu-bar__text">
-                    <span className="crancy-menu-icon crancy-svg-icon__v1">
-                      <svg
-                        className="crancy-svg-icon"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M11.0717 4.06949C8.26334 4.49348 6.01734 6.81294 5.67964 9.79403L5.33476 12.8385C5.24906 13.595 4.94246 14.3069 4.45549 14.88C3.42209 16.0964 4.26081 18 5.83014 18H18.1699C19.7392 18 20.5779 16.0964 19.5445 14.88C19.0575 14.3069 18.7509 13.595 18.6652 12.8385L18.4373 10.8267M15 20C14.5633 21.1652 13.385 22 12 22C10.615 22 9.43668 21.1652 9 20M20 5C20 6.65685 18.6569 8 17 8C15.3431 8 14 6.65685 14 5C14 3.34315 15.3431 2 17 2C18.6569 2 20 3.34315 20 5Z"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span className="menu-bar__name">Notifications</span>
-                  </span>
-                  <span className="menu-bar__count  crancy-color1__bg">7</span>
-                </Link>
-              </li>
-              {/* products */}
+              />
+              
+              {/* products  */}
               <li
                 className={location.pathname === "/products" ? "active" : ""}
               >
@@ -846,7 +822,7 @@ const Menu=({ toggleMenu, menu })=> {
             </Link>
           </div>
           {/* <!-- End Support Card --> */}
-        </div>*/}
+        </div>
       </div>
     </div>
   );

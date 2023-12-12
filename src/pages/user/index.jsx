@@ -6,7 +6,7 @@ import SearchBar from "../../component/user/SearchBar";
 import UsersCom from "../../component/user/UsersCom";
 import Sidebar3 from "../../component/user/Sidebar3";
 import useMenu from "../../hooks/useMenu";
-// import { useGetAllUsersQuery } from "../../redux/features/auth/authApi";
+// import { useGetAllUsersQuery } from "../../redux/features/authActions";
 const Users = () => {
   useMenu();
   // const [getAllUsers, {}] = useGetAllUsersQuery();

@@ -8,7 +8,7 @@ import BodyWrapper from "../../component/email/BodyWrapper";
 import EmailSidebar from "../../component/email/EmailSidebar";
 import EmailCom from "../../component/email/EmailCom";
 import useMenu from "../../hooks/useMenu";
-import { fetchAllUserEmail } from "../../redux/features/auth/authSlice";
+import { fetchAllUserEmail } from "../../redux/features/authActions";
 
 function Email() {
   const dispatch = useDispatch();

@@ -8,7 +8,7 @@ import ErrorMsg from "../../component/common/error-msg";
 import { notifyError, notifySuccess } from "../../utils/toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminSignup } from "../../redux/features/auth/authSlice";
+import { adminSignup } from "../../redux/features/authActions";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),

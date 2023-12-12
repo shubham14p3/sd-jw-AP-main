@@ -4,7 +4,7 @@ import BreadCrumb from "../../component/home-two/BreadCrumb";
 import Sidebar from "../../component/home/Sidebar";
 import useMenu from "../../hooks/useMenu";
 import ProductsList from "../../component/products/ProductsList";
-import { fetchAllProducts } from "../../redux/features/auth/authSlice";
+import { fetchAllProducts } from "../../redux/features/authActions";
 import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {

@@ -3,10 +3,7 @@ import dotIcon from "../../assets/img/dots.svg";
 import { Link } from "react-router-dom";
 
 function ProductItem({ product }) {
-  console.log(product);
-
   const { id, img, title, createdAt, price, payment, status, brand } = product;
-
   return (
     <tr>
       <td className="crancy-table__column-1 crancy-table__data-1">

@@ -5,8 +5,8 @@ import ErrorMsg from "../../component/common/error-msg";
 import { notifyError, notifySuccess } from "../../utils/toast";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { adminLogin } from "../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { adminLogin } from "../../redux/features/authActions";
 const styles = {
   error: {
     color: "red",
@@ -57,7 +57,11 @@ function LoginForm() {
             password: values.password,
           })
         );
-        if (data?.payload === 200) {
+        // Check if the response is successful based on the payload or status code
+        if (
+          data?.payload === 200 ||
+          (data?.response && data.response.status === 200)
+        ) {
           notifySuccess("Login successfully");
           setTimeout(() => {
             navigate("/home");
@@ -67,7 +71,8 @@ function LoginForm() {
           resetForm();
         }
       } catch (error) {
-        notifyError("An error occurred during login. Please try again.");
+        // Log the error to console for debugging
+        console.error("Error during login:", error);
       }
     },
   });

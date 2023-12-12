@@ -1,4 +1,4 @@
-import * as apiService from "../../api/apiService";
+import * as apiService from "../api/apiService";
 const NEXT_PUBLIC_API_BASE_URL = import.meta.env.VITE_DB_HOST;
 
 export const adminLoginApi = async (payload) =>
@@ -34,3 +34,5 @@ export const uploadAdminProfileCoverImageApi = async (payload, id) =>
     `${NEXT_PUBLIC_API_BASE_URL}/cloudinary/add-admin-profile-cover-img/${id}`,
     payload
   );
+export const createSingleProductApi = async (payload) =>
+  apiService.postData(`${NEXT_PUBLIC_API_BASE_URL}/product/add`, payload);

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { updateAdminUserById } from "../../../redux/features/auth/authSlice";
+import { updateAdminUserById } from "../../../redux/features/authActions";
 import { notifySuccess } from "../../../utils/toast";
 const validationSchema = Yup.object().shape({
   // firstName: Yup.string().required("First Name is required"),

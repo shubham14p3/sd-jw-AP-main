@@ -6,7 +6,7 @@ import Sidebar from "../../component/settings/Sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import useMenu from "../../hooks/useMenu";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoggedIn } from "../../redux/features/auth/authSlice";
+import { userLoggedIn } from "../../redux/features/authReducers";
 import Cookies from "js-cookie";
 const Settings = ({ children }) => {
   useMenu();

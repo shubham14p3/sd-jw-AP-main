@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  confirmAdminEmail,
-  userLoggedIn,
-} from "../../redux/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { notifySuccess, notifyError } from "../../utils/toast";
+import { confirmAdminEmail } from "../../redux/features/authActions";
+import { userLoggedIn } from "../../redux/features/authReducers";
 
 const EmailVerification = () => {
   const { token } = useParams();

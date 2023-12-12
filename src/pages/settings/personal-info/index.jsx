@@ -9,7 +9,7 @@ import {
   updateAdminUserById,
   uploadAdminProfileCoverImage,
   uploadAdminProfileImage,
-} from "../../../redux/features/auth/authSlice";
+} from "../../../redux/features/authActions";
 import { notifySuccess, notifyError } from "../../../utils/toast";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";

@@ -9,7 +9,7 @@ import ProfileHeader from "../../component/profile-overview/ProfileHeader";
 import SidebarProfile from "../../component/profile-overview/SidebarProfile";
 import TabList from "../../component/profile-overview/TabList";
 import useMenu from "../../hooks/useMenu";
-import { userLoggedIn } from "../../redux/features/auth/authSlice";
+import { userLoggedIn } from "../../redux/features/authReducers";
 function ProfileOverview({ children }) {
   const user = useSelector((state) => state.auth.loggedinUser);
   const dispatch = useDispatch();

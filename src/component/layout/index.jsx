@@ -5,7 +5,7 @@ import Header from "../header";
 import { ToastComponent } from "../../utils/toast";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { userLoggedIn } from "../../redux/features/auth/authSlice";
+import { userLoggedIn } from "../../redux/features/authReducers";
 function Layout({ children }) {
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {

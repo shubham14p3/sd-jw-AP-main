@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { users } from "../../data/users";
 import UserCard from "../cards/UserCard";
 import Pagination from "../teams/Pagination";
-import { fetchAllUser } from "../../redux/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAllUser } from "../../redux/features/authActions";
 
 const UsersCom = () => {
   const userList = useSelector((state) => state.auth.usersList);

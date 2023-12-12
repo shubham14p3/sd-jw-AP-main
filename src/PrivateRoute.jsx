@@ -2,7 +2,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Route, Navigate, Routes } from "react-router-dom";
-import { selectAccessToken } from "./redux/features/auth/authSlice";
+import { selectAccessToken } from "./redux/features/authReducers";
 
 const PrivateRoute = ({ path, element }) => {
   const accessToken = useSelector(selectAccessToken);

@@ -2,7 +2,7 @@ import React from "react";
 import profile from "../../assets/img/profile-pic.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userLoggedOut } from "../../redux/features/auth/authSlice";
+import { userLoggedOut } from "../../redux/features/authReducers";
 
 const Author = ({ subNav, setSubNav, title, userList }) => {
   const dispatch = useDispatch();

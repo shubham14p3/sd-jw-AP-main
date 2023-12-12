@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { userLoggedIn, userLoggedOut } from "../redux/features/auth/authSlice";
-import { selectAccessToken, selectUser } from "../redux/features/auth/authSlice";
+import { userLoggedIn, userLoggedOut } from "../redux/features/authReducers";
+import { selectAccessToken, selectUser } from "../redux/features/authReducers";
 
 export default function useAuthCheck() {
   const dispatch = useDispatch();

@@ -43,6 +43,7 @@ import TermsAndCondition from "./pages/settings/terms-and-conditions";
 import SupportTicket from "./pages/support-ticket";
 import PrivateRoute from "./PrivateRoute";
 import EmailVerification from "./pages/email-verify";
+import SingleProductAdd from "./pages/single-product-add";
 
 const router = createBrowserRouter([
   {
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/product-add",
+        element: <SingleProductAdd />,
       },
       {
         path: "/notifications",
