@@ -214,9 +214,9 @@ const Menu = ({ toggleMenu, menu }) => {
                 dropdown={dropdown}
                 setDropdown={handleDropdown}
                 options={[
-                  { link: "brand", title: "View Brand" },
-                  { link: "brand-add", title: "Add Single Brand" },
-                  { link: "brand-add-bulk", title: "Add Bulk Brand" },
+                  { link: "coupons", title: "View Coupons" },
+                  { link: "coupon-add", title: "Add Single Coupon" },
+                  { link: "coupon-add-bulk", title: "Add Bulk Coupon" },
                 ]}
                 img={
                   <svg
