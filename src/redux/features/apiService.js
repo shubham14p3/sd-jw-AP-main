@@ -11,7 +11,7 @@ export const confirmAdminEmailApi = async (token) =>
 export const fetchAllUserApi = async (token) =>
   apiService.getData(`${NEXT_PUBLIC_API_BASE_URL}/user/all`);
 export const fetchAdminUserByIdApi = async (id) =>
-  apiService.getData(`${NEXT_PUBLIC_API_BASE_URL}/getAdminUserById/${id}`);
+  apiService.getData(`${NEXT_PUBLIC_API_BASE_URL}/admin/getAdminUserById/${id}`);
 export const updateAdminUserByIdApi = async (id, data) =>
   apiService.patchData(
     `${NEXT_PUBLIC_API_BASE_URL}/admin/update-admin-staff/${id}`,
