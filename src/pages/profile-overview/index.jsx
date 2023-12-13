@@ -9,21 +9,22 @@ import ProfileHeader from "../../component/profile-overview/ProfileHeader";
 import SidebarProfile from "../../component/profile-overview/SidebarProfile";
 import TabList from "../../component/profile-overview/TabList";
 import useMenu from "../../hooks/useMenu";
-import { userLoggedIn } from "../../redux/features/authReducers";
+import { fetchAdminUserById } from "../../redux/features/authActions";
 function ProfileOverview({ children }) {
   const user = useSelector((state) => state.auth.loggedinUser);
   const dispatch = useDispatch();
   useEffect(() => {
     const localAuth = Cookies.get("userInfo");
+    const localData = localStorage.getItem("UID");
     if (localAuth) {
-      const auth = JSON.parse(localAuth);
-      if (auth?.accessToken && auth?.loggedinUser) {
-        dispatch(
-          userLoggedIn({
-            accessToken: auth.accessToken,
-            loggedinUser: auth.loggedinUser,
-          })
-        );
+      const { accessToken, loggedinUser } = JSON.parse(localAuth);
+      if (accessToken && loggedinUser) {
+        dispatch(fetchAdminUserById(loggedinUser));
+      }
+    } else if (localData) {
+      const auth = JSON.parse(localData);
+      if (auth) {
+        dispatch(fetchAdminUserById(auth));
       }
     }
   }, [dispatch]);

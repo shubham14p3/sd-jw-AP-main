@@ -5,7 +5,7 @@ import Header from "../header";
 import { ToastComponent } from "../../utils/toast";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { userLoggedIn } from "../../redux/features/authReducers";
+import { fetchAdminUserById } from "../../redux/features/authActions";
 function Layout({ children }) {
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {
@@ -16,17 +16,18 @@ function Layout({ children }) {
   const navigate = useNavigate();
   useEffect(() => {
     const localAuth = Cookies.get("userInfo");
+    const localData = localStorage.getItem("UID");
     if (localAuth) {
-      const auth = JSON.parse(localAuth);
-      if (auth?.accessToken && auth?.loggedinUser) {
-        dispatch(
-          userLoggedIn({
-            accessToken: auth.accessToken,
-            loggedinUser: auth.loggedinUser,
-          })
-        );
+      const { accessToken, loggedinUser } = JSON.parse(localAuth);
+      if (accessToken && loggedinUser) {
+        dispatch(fetchAdminUserById(loggedinUser));
       }
-    } 
+    } else if (localData) {
+      const auth = JSON.parse(localData);
+      if (auth) {
+        dispatch(fetchAdminUserById(auth));
+      }
+    }
   }, [dispatch]);
   useEffect(() => {
     if (menu) {

@@ -13,15 +13,15 @@ import bg from "../../assets/img/support-bg.png";
 import { useDispatch } from "react-redux";
 import { userLoggedOut } from "../../redux/features/authReducers";
 
-const Menu=({ toggleMenu, menu })=> {
+const Menu = ({ toggleMenu, menu }) => {
   const [dropdown, setDropdown] = useState(false);
   const location = useLocation();
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleDropdown = (name) => {
     setDropdown(name === dropdown ? "" : name);
   };
-  
+
   const handleLogout = () => {
     dispatch(userLoggedOut());
     navigate("/");
@@ -58,8 +58,7 @@ const Menu=({ toggleMenu, menu })=> {
           {/* <!-- Nav Menu --> */}
           <div className="menu-bar">
             <ul id="CrancyMenu" className="menu-bar__one crancy-dashboard-menu">
-              
-             {/* mail */}
+              {/* mail */}
               <li className={location.pathname === "/email" ? "active" : ""}>
                 <Link className="collapsed" to="/email">
                   <span className="menu-bar__text">
@@ -94,14 +93,14 @@ const Menu=({ toggleMenu, menu })=> {
                   </div> */}
                 </Link>
               </li>
-           
+
               {/* products  dropdown*/}
               <Dropdown
                 name="Products"
                 dropdown={dropdown}
                 setDropdown={handleDropdown}
                 options={[
-                  { link: 'products', title: "View Products" },
+                  { link: "products", title: "View Products" },
                   { link: "product-add", title: "Add Single Products" },
                   { link: "home-analytics", title: "Add Multiple Products" },
                 ]}
@@ -133,11 +132,140 @@ const Menu=({ toggleMenu, menu })=> {
                   </svg>
                 }
               />
-              
+              {/* Category  dropdown*/}
+              <Dropdown
+                name="Category"
+                dropdown={dropdown}
+                setDropdown={handleDropdown}
+                options={[
+                  { link: "category", title: "View Category" },
+                  { link: "category-add", title: "Add Single Category" },
+                  { link: "category-add-bulk", title: "Add Bulk Category" },
+                ]}
+                img={
+                  <svg
+                    className="crancy-svg-icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 4C2 2.89543 2.89543 2 4 2H8C9.10457 2 10 2.89543 10 4V8C10 9.10457 9.10457 10 8 10H4C2.89543 10 2 9.10457 2 8V4Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M22 6C22 8.20914 20.2091 10 18 10C15.7909 10 14 8.20914 14 6C14 3.79086 15.7909 2 18 2C20.2091 2 22 3.79086 22 6Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M10 18C10 20.2091 8.20914 22 6 22C3.79086 22 2 20.2091 2 18C2 15.7909 3.79086 14 6 14C8.20914 14 10 15.7909 10 18Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M14 16C14 14.8954 14.8954 14 16 14H20C21.1046 14 22 14.8954 22 16V20C22 21.1046 21.1046 22 20 22H16C14.8954 22 14 21.1046 14 20V16Z"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                }
+              />
+              {/* Brands  dropdown*/}
+              <Dropdown
+                name="Brands"
+                dropdown={dropdown}
+                setDropdown={handleDropdown}
+                options={[
+                  { link: "brand", title: "View Brand" },
+                  { link: "brand-add", title: "Add Single Brand" },
+                  { link: "brand-add-bulk", title: "Add Bulk Brand" },
+                ]}
+                img={
+                  <svg
+                    className="crancy-svg-icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2 4C2 2.89543 2.89543 2 4 2H8C9.10457 2 10 2.89543 10 4V8C10 9.10457 9.10457 10 8 10H4C2.89543 10 2 9.10457 2 8V4Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M22 6C22 8.20914 20.2091 10 18 10C15.7909 10 14 8.20914 14 6C14 3.79086 15.7909 2 18 2C20.2091 2 22 3.79086 22 6Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M10 18C10 20.2091 8.20914 22 6 22C3.79086 22 2 20.2091 2 18C2 15.7909 3.79086 14 6 14C8.20914 14 10 15.7909 10 18Z"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="M14 16C14 14.8954 14.8954 14 16 14H20C21.1046 14 22 14.8954 22 16V20C22 21.1046 21.1046 22 20 22H16C14.8954 22 14 21.1046 14 20V16Z"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                }
+              />
+              {/* Coupon  dropdown*/}
+              <Dropdown
+                name="Coupon"
+                dropdown={dropdown}
+                setDropdown={handleDropdown}
+                options={[
+                  { link: "coupons", title: "View Coupons" },
+                  { link: "coupon-add", title: "Add Single Coupon" },
+                  { link: "coupon-add-bulk", title: "Add Bulk Coupon" },
+                ]}
+                img={
+                  <svg
+                    className="crancy-svg-icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M3.75 6.75L4.5 6H20.25L21 6.75V10.7812H20.25C19.5769 10.7812 19.0312 11.3269 19.0312 12C19.0312 12.6731 19.5769 13.2188 20.25 13.2188H21V17.25L20.25 18L4.5 18L3.75 17.25V13.2188H4.5C5.1731 13.2188 5.71875 12.6731 5.71875 12C5.71875 11.3269 5.1731 10.7812 4.5 10.7812H3.75V6.75ZM5.25 7.5V9.38602C6.38677 9.71157 7.21875 10.7586 7.21875 12C7.21875 13.2414 6.38677 14.2884 5.25 14.614V16.5L9 16.5L9 7.5H5.25ZM10.5 7.5V16.5L19.5 16.5V14.614C18.3632 14.2884 17.5312 13.2414 17.5312 12C17.5312 10.7586 18.3632 9.71157 19.5 9.38602V7.5H10.5Z"
+                      fill="#080341"
+                    />
+                  </svg>
+                }
+              />
+              {/* Order  dropdown*/}
+              <Dropdown
+                name="Order"
+                dropdown={dropdown}
+                setDropdown={handleDropdown}
+                options={[
+                  { link: "brand", title: "View Brand" },
+                  { link: "brand-add", title: "Add Single Brand" },
+                  { link: "brand-add-bulk", title: "Add Bulk Brand" },
+                ]}
+                img={
+                  <svg
+                    className="crancy-svg-icon"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                       <path
+                          d="M6 9H14M6 13H14M6 17H10M6 3C6 4.10457 6.89543 5 8 5H12C13.1046 5 14 4.10457 14 3M6 3C6 1.89543 6.89543 1 8 1H12C13.1046 1 14 1.89543 14 3M6 3H5C2.79086 3 1 4.79086 1 7V17C1 19.2091 2.79086 21 5 21H15C17.2091 21 19 19.2091 19 17V7C19 4.79086 17.2091 3 15 3H14"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                        />
+                  </svg>
+                }
+              />
+
               {/* products  */}
-              <li
-                className={location.pathname === "/products" ? "active" : ""}
-              >
+              <li className={location.pathname === "/products" ? "active" : ""}>
                 <Link className="collapsed" to="/products">
                   <span className="menu-bar__text">
                     <span className="crancy-menu-icon crancy-svg-icon__v1">
@@ -160,8 +288,7 @@ const Menu=({ toggleMenu, menu })=> {
                   </span>
                 </Link>
               </li>
-             
-             
+
               <li className={location.pathname === "/user" ? "active" : ""}>
                 <Link className="collapsed" to="/user">
                   <span className="menu-bar__text">
@@ -232,8 +359,8 @@ const Menu=({ toggleMenu, menu })=> {
                   </span>
                 </Link>
               </li>
-               {/* transaction */}
-               <li
+              {/* transaction */}
+              <li
                 className={location.pathname === "/transaction" ? "active" : ""}
               >
                 <Link className="collapsed" to="/transaction">
@@ -262,9 +389,6 @@ const Menu=({ toggleMenu, menu })=> {
           </div>
           {/* <!-- End Nav Menu --> */}
         </div>
-
-
-
 
         {/* //modifuyng above */}
 
@@ -470,9 +594,7 @@ const Menu=({ toggleMenu, menu })=> {
                 ]}
               />
               {/* products */}
-              <li
-                className={location.pathname === "/products" ? "active" : ""}
-              >
+              <li className={location.pathname === "/products" ? "active" : ""}>
                 <Link className="collapsed" to="/products">
                   <span className="menu-bar__text">
                     <span className="crancy-menu-icon crancy-svg-icon__v1">
@@ -826,6 +948,6 @@ const Menu=({ toggleMenu, menu })=> {
       </div>
     </div>
   );
-}
+};
 
 export default Menu;

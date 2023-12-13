@@ -44,6 +44,10 @@ import SupportTicket from "./pages/support-ticket";
 import PrivateRoute from "./PrivateRoute";
 import EmailVerification from "./pages/email-verify";
 import SingleProductAdd from "./pages/single-product-add";
+import Order from "./pages/order";
+import Brand from "./pages/brand";
+import Category from "./pages/category";
+import Coupons from "./pages/coupons";
 
 const router = createBrowserRouter([
   {
@@ -140,6 +144,22 @@ const router = createBrowserRouter([
       {
         path: "/transaction",
         element: <Transaction />,
+      },
+      {
+        path: "/coupons",
+        element: <Coupons />,
+      },
+      {
+        path: "/category",
+        element: <Category />,
+      },
+      {
+        path: "/brand",
+        element: <Brand />,
+      },
+      {
+        path: "/order",
+        element: <Order />,
       },
       {
         path: "/products",

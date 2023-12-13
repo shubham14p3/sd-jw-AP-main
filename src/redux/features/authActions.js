@@ -27,11 +27,10 @@ export const adminLogin = createAsyncThunk(
   async (Username, thunkAPI) => {
     try {
       const result = await adminLoginApi(Username);
-
       const { token, admin } = result.data.data;
       Cookies.set(
         "userInfo",
-        JSON.stringify({ accessToken: token, loggedinUser: admin }),
+        JSON.stringify({ accessToken: token, loggedinUser: admin?._id }),
         { expires: 0.5 }
       );
       localStorage.setItem("UID", JSON.stringify(admin._id));
@@ -118,7 +117,7 @@ export const updateAdminUserById = createAsyncThunk(
         const { token, admin } = result?.data;
         Cookies.set(
           "userInfo",
-          JSON.stringify({ accessToken: token, loggedinUser: admin }),
+          JSON.stringify({ accessToken: token, loggedinUser: admin?._id }),
           { expires: 0.5 }
         );
         thunkAPI.dispatch(

@@ -142,10 +142,23 @@ function Header({ toggleMenu, menu }) {
                                 : " "}{" "}
                               {userList ? userList.lastName.toUpperCase() : " "}{" "}
                             </a>
-                            <p>
-                              {userList ? userList.role.toUpperCase() : " "} (
-                              {userList ? userList.status.toUpperCase() : " "} )
-                            </p>
+                            <span
+                              style={{ display: "flex", marginRight: "10px" }}
+                            >
+                              <p>
+                                {userList ? userList.role.toUpperCase() : " "}
+                              </p>
+                              <p
+                                style={{
+                                  color: "lightgreen",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                {userList
+                                  ? `(${userList.status.toUpperCase()})`
+                                  : " "}
+                              </p>
+                            </span>
                           </div>
                           <Author
                             subNav={subNav}
