@@ -43,11 +43,12 @@ import TermsAndCondition from "./pages/settings/terms-and-conditions";
 import SupportTicket from "./pages/support-ticket";
 import PrivateRoute from "./PrivateRoute";
 import EmailVerification from "./pages/email-verify";
-import SingleProductAdd from "./pages/single-product-add";
+import SingleProductAdd from "./pages/products/single-product-add";
 import Order from "./pages/order";
 import Brand from "./pages/brand";
 import Category from "./pages/category";
 import Coupons from "./pages/coupons";
+import SingleCouponAdd from "./pages/coupons/single-coupons-add";
 
 const router = createBrowserRouter([
   {
@@ -150,16 +151,33 @@ const router = createBrowserRouter([
         element: <Coupons />,
       },
       {
+        path: "/coupon-add",
+        element: <SingleCouponAdd />,
+      },
+      {
         path: "/category",
         element: <Category />,
+      },
+
+      {
+        path: "/category-add",
+        element: <SingleProductAdd />,
       },
       {
         path: "/brand",
         element: <Brand />,
       },
       {
+        path: "/brand-add",
+        element: <SingleProductAdd />,
+      },
+      {
         path: "/order",
         element: <Order />,
+      },
+      {
+        path: "/order-add",
+        element: <SingleProductAdd />,
       },
       {
         path: "/products",

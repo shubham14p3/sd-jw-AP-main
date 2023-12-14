@@ -5,7 +5,7 @@ import calendarIcon from "../../assets/img/calendar-icon-2.svg";
 import downloadIcon from "../../assets/img/download-icon2.svg";
 import CouponItem from "./CouponItem";
 
-function CouponList({ className, products }) {
+function CouponList({ className, coupons }) {
   const [page, setPage] = useState(1);
   const [show, setShow] = useState(25);
   return (
@@ -96,20 +96,23 @@ function CouponList({ className, products }) {
                         name="checkbox"
                         type="checkbox"
                       />
-                      <span>Customer name</span>
+                      <span>Customer Title</span>
                     </div>
                   </th>
                   <th className="crancy-table__column-2 crancy-table__h2">
-                    Brand
+                    Coupon Code
                   </th>
                   <th className="crancy-table__column-2 crancy-table__h2">
-                    Date
+                    Created Date
+                  </th>
+                  <th className="crancy-table__column-2 crancy-table__h2">
+                    End Date
                   </th>
                   <th className="crancy-table__column-3 crancy-table__h3">
-                    Amount
+                    D %
                   </th>
                   <th className="crancy-table__column-4 crancy-table__h4">
-                    Payment
+                    M.A.
                   </th>
                   <th className="crancy-table__column-5 crancy-table__h5">
                     Status
@@ -118,7 +121,7 @@ function CouponList({ className, products }) {
               </thead>
               {/* <!-- crancy Table Body --> */}
               <tbody className="crancy-table__body">
-                {products?.map((product, index) => {
+                {coupons?.map((product, index) => {
                   const current = page * show;
                   const previous = current - show;
                   if (
@@ -126,9 +129,7 @@ function CouponList({ className, products }) {
                     index + 1 > previous &&
                     index + 1 <= current
                   ) {
-                    return (
-                      <CouponItem product={product} key={index + "key"} />
-                    );
+                    return <CouponItem product={product} key={index + "key"} />;
                   } else if (page == 1) {
                     return (
                       index < page * show && (

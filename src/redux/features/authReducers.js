@@ -19,6 +19,7 @@ const initialState = {
   loggedinUser: undefined,
   usersList: [],
   productList: [],
+  couponsList: [],
   userEmail: [],
   isLoading: false,
   isSuccess: false,
@@ -51,6 +52,9 @@ const authSlice = createSlice({
     },
     fetchUserEmailSuccess: (state, action) => {
       state.userEmail = action.payload.userEmail;
+    },
+    fetchAllCouponsDetails: (state, action) => {
+      state.couponsList = action.payload.couponsList;
     },
   },
   extraReducers: (builder) => {
@@ -97,6 +101,7 @@ export const {
   fetchAllUserDetails,
   fetchAllProductsDetails,
   fetchUserEmailSuccess,
+  fetchAllCouponsDetails
 } = authSlice.actions;
 
 export const selectAccessToken = (state) => state.auth.accessToken;

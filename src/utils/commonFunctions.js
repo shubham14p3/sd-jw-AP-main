@@ -16,3 +16,15 @@ export function formatDate(inputDate) {
   return formattedDate;
 }
 
+export function convertDateFormat(isoDateString) {
+  const isoDate = new Date(isoDateString);
+
+  const day = isoDate.getDate();
+  const month = isoDate.getMonth() + 1; // Months are zero-based
+  const year = isoDate.getFullYear();
+
+  // Format the date as DD-MM-YYYY
+  const formattedDate = `${day}-${month}-${year}`;
+
+  return formattedDate;
+}

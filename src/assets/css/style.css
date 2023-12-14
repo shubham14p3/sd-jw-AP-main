@@ -188,7 +188,7 @@ Version:	1.0.0
 .menu-bar li .crancy__dropdown {
   padding-left: 15px;
   border-left: 1px solid #e4f2ffb5;
-  margin-left: 40px;
+  margin-left: 1px;
 }
 .menu-bar li.show-dropdown ul {
   opacity: 1;

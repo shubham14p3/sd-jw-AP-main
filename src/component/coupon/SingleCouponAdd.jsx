@@ -16,7 +16,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { FileUploader } from "react-drag-drop-files";
 
-const SingleCouponAdd = () => {
+const SingleCouponAddForm = () => {
   const user = useSelector((state) => state.auth.loggedinUser);
 
   const dispatch = useDispatch();
@@ -275,7 +275,7 @@ const SingleCouponAdd = () => {
             type="submit"
             disabled={!formik.dirty || !formik.isValid}
           >
-            Add Product
+            Add Coupon
           </button>
         </div>
       </form>
@@ -283,4 +283,4 @@ const SingleCouponAdd = () => {
   );
 };
 
-export default SingleCouponAdd;
+export default SingleCouponAddForm;

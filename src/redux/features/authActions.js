@@ -12,6 +12,7 @@ import {
   uploadAdminProfileCoverImageApi,
   fetchAllUserEmailApi,
   createSingleProductApi,
+  fetchAllCouponsApi
 } from "./apiService";
 import {
   userLoggedIn,
@@ -19,6 +20,7 @@ import {
   fetchAllUserDetails,
   fetchAllProductsDetails,
   fetchUserEmailSuccess,
+  fetchAllCouponsDetails
 } from "./authReducers";
 
 //POST
@@ -151,6 +153,21 @@ export const fetchAllProducts = createAsyncThunk(
       const result = await fetchAllProductsApi();
       const { data } = result.data;
       thunkAPI.dispatch(fetchAllProductsDetails({ productList: data }));
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+//get
+export const fetchAllCoupons = createAsyncThunk(
+  "Admin/fetchAllCoupons",
+  async (token, thunkAPI) => {
+    try {
+      const result = await fetchAllCouponsApi();
+      if(result?.data){
+        thunkAPI.dispatch(fetchAllCouponsDetails({ couponsList: result?.data }));
+      }
+      
     } catch (error) {
       throw error;
     }
